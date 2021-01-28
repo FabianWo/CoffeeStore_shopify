@@ -1,0 +1,45 @@
+{% assign svg-names = 'checkbox,deliverytruck,coffeemachine' | split: ',' %}
+
+{% for block in section.blocks %}
+
+  <div class="product-step-wrapper" {{ block.shopify_attributes }} >
+
+    <span class="product-step__number">{{ forloop.index }}.</span>
+    {{ svg-names[forloop.index0] | append: '.svg' | asset_url | img_tag : 'order-step-icon', 'product-step__icon' }}
+    <div class="product-step__text-container">
+      <div class="product-step__text">{{ block.settings.product-step-text }}</div>
+    </div>
+
+
+  </div>
+  
+{% endfor %}
+
+
+
+{% schema %}
+{
+  "name": "product-steps",
+  "tag": "section",
+  "class": "main__section section-product-steps box-lightshadow",
+  "blocks": [
+    {
+      "type": "product-step-settings",
+      "name": "product-step-block",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "product-step-text",
+          "label": "text for the product-step"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name":"product steps"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,43 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Themekit template theme",
+    "theme_version": "1.0.0",
+    "theme_author": "Shopify",
+    "theme_documentation_url": "https:\/\/github.com\/Shopify\/themekit",
+    "theme_support_url": "https:\/\/github.com\/Shopify\/themekit\/issues"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "id": "coloryo",
+        "type": "color",
+        "label": "primary color",
+        "default": "#95856A"
+      },
+      {
+        "id": "font-primary",
+        "type": "font_picker",
+        "label": "Primary font",
+        "default": "montserrat_n4"
+      },
+      {
+        "id": "font-secondary",
+        "type": "font_picker",
+        "label": "secondary font",
+        "default": "alegreya_n4"
+      },
+      {
+        "id": "coloo",
+        "type": "link_list",
+        "label": "primary or"
+      },
+      {
+        "id": "coryo",
+        "type": "product",
+        "label": "primaor"
+      }
+    ]
+  }
+]

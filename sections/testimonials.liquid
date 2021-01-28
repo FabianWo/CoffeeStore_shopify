@@ -1,0 +1,69 @@
+{% for block in section.blocks %}
+
+  <div class="testimonial-wrapper" {{ block.shopify_attributes }} >
+
+    {{ 'quotes.svg'| asset_url | img_tag : '', 'testimonial__quotes' }}
+    <span class="testimonial__text">
+      {{- block.settings.testimonial-text | truncate: 160 -}}
+    </span>
+    <span class="testimonial__author">
+      - {{ block.settings.testimonial-author | truncate: 30 }}
+    </span>
+
+  </div>
+  
+{% endfor %}
+
+
+{% style %}
+.section-testimonials {
+  margin-top: calc(0rem - {{ section.settings.top-offset}}rem );
+}
+{% endstyle %}
+
+
+{% schema %}
+
+{
+  "name": "testimonials",
+  "tag": "section",
+  "class": "main__section section-testimonials box-lightshadow",
+  "settings": [
+    {
+      "type": "range",
+      "id": "top-offset",
+      "label": "Negative section offset for overlapping",
+      "unit": "rem",
+      "min": -14,
+      "max": 14,
+      "step": 2,
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial-settings",
+      "name": "testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "testimonial-text",
+          "label": "testimonial text (160 chararacters max)"
+        },
+        {
+          "type": "text",
+          "id": "testimonial-author",
+          "label": "testimonial author (30 chararacters max)"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name":"testimonial section"
+    }
+  ]
+}
+
+{% endschema %}

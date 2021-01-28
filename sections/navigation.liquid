@@ -1,0 +1,66 @@
+<div class="nav-container">
+
+  <div class="logo-container">
+    <a href="/">{{ 'espresso-cup.svg'| asset_url | img_tag : 'espresso-cup logo', 'logo' }}</a>
+  </div>  
+
+  <ul class="nav__list">
+
+    {% for link in linklists.main-menu.links %}
+      {% assign child_list_handle = link.title | handleize %}
+
+      {% if linklists[child_list_handle].links != blank %}
+        <li class="nav__list-item">
+          <a class="nav__link" href="{{ link.url }}">{{ link.title }}</a>
+        </li>
+        
+        {% for childlink in linklists[child_list_handle].links %}
+
+          <li class="nav__list-item">
+            <a class="nav__link" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+          </li>
+        {% endfor %}]
+
+        {% else %}
+          <li class="nav__list-item">
+            <a class="nav__link" href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+          
+      {% endif %}
+    {% endfor %}
+  </ul>
+  
+  <div class="nav__list-side">
+    <span class="nav__list-item"> <a class="nav__link" href="/login">login</a></span>
+    <span>
+      <a href="/cart">{{ 'cart-icon.svg' | asset_url | img_tag : '', 'cart-icon' }}</a>
+    </span>
+    
+    <!-- {% if shop.customer_accounts_enabled %}
+      {% if customer %}
+        <a class="nav__list-item" href="/account">account</a>
+        {{ 'log out'  | customer_logout_link }}
+      {% else %}
+        {{ 'log in ' | customer_login_link }}
+        {{ 'register' | customer_register_link }}
+      {% endif %}
+    {% endif %} -->
+
+    <!-- <div class="nav__link menu-button-text">Menu</div>
+    <div class="menu-button-stripes">
+      <div class="menu-button-stripe"></div>
+      <div class="menu-button-stripe"></div>
+    </div> -->
+    
+  </div>
+
+</div>
+
+
+{% schema %}
+{
+  "name": "navigation",
+  "tag": "header",
+  "class": "nav"
+}
+{% endschema %}

@@ -1,0 +1,105 @@
+<div class="main__section blog__hero">
+
+  <span class="h1-heading blog__heading">
+    {{ blog.title }}
+  </span>
+
+  <span class="h1-description blog__description">
+    {{ section.settings.blog-description | truncate: 75 }}
+  </span>
+</div>
+
+<div class="blog__articles">
+
+  {% paginate blog.articles by 5 %}
+  {% for article in blog.articles %}
+
+  <div class="blog__article-wrapper box-lightshadow">
+    
+    {% if article.image %}
+      <div class="blog__article-image-wrapper">
+        {{ article.image | img_url: '400x' | img_tag: '', 'blog__article-image' }}
+      </div>
+    {% else %}
+      <div class="blog__article-image-wrapper">
+        {{ 'collection-1' | placeholder_svg_tag: 'blog__article-image' }}
+      </div>
+    {% endif %}
+
+    <div class="blog__article-textbox">
+      
+      <h2 class="blog__article-heading">
+        <a class="blog__article-link" href="{{ article.url }}">{{ article.title }}</a>
+      </h2>
+  
+      {% if article.excerpt.size > 0 %}
+        <span class="blog__article-excerpt regular-text">
+          {{- article.excerpt | strip_html | truncatewords: 40 -}}
+        </span>
+      {% else %}
+        <span class="blog__article-excerpt regular-text">
+          {{- article.content | strip_html | truncatewords: 40 -}}
+        </span>
+      {% endif %}
+  
+      <span class="testimonial__author blog__article-author">
+        - {{ article.author | truncate: 30 }} @ {{ article.created_at | date: format: 'abbreviated_date'}}
+      </span>
+    </div>
+
+  </div>
+  {% endfor %}
+  
+  {% if paginate.pages > 1 %}
+    {{ paginate | default_pagination }}
+  {% endif %}
+  
+  {% endpaginate %}
+
+</div>
+
+
+{% style %}
+.blog__hero::before {
+  background-image: url({{section.settings.bg-image | img_url: '2260x' }});
+}
+
+.blog__articles {
+  margin-top: calc(0rem - {{ section.settings.top-offset}}rem );
+}
+{% endstyle %}
+
+
+{% schema %}
+{
+  "name": "blog-template",
+  "class": "blog-template",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg-image",
+      "label": "set background image behind blog title"
+    },
+    {
+      "type": "textarea",
+      "id": "blog-description",
+      "label": "brief blog description"
+    },
+    {
+      "type": "range",
+      "id": "top-offset",
+      "label": "Negative section offset for overlapping",
+      "unit": "rem",
+      "min": -14,
+      "max": 14,
+      "step": 2,
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name":"bg-image"
+    }
+  ]
+}
+{% endschema %}

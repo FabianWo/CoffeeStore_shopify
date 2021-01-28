@@ -1,0 +1,134 @@
+<div class="main__section article__hero"></div>
+
+<div class="article__header box-lightshadow">
+
+  <span class="article__heading">{{ article.title }}</span>
+
+  <span class="regular-text article__excerpt">
+    {{- article.excerpt | strip_html | truncatewords: 40 -}}
+  </span>
+  
+  {% capture author %}<strong>{{ article.author }}</strong>{% endcapture %}
+  {% capture date %}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>{% endcapture %}
+  
+  <span class="testimonial__author article__author">
+    ~ 10 minute read - {{ article.author }}  {{ article.created_at | date: format: 'abbreviated_date'}}
+  </span>
+
+</div>
+
+<div class="article__content-wrapper">
+
+  <div class="regular-text article__content">
+    {{ article.content }}
+  </div>
+  
+  {% if blog.comments_enabled? %}
+  
+    <div class="article__newcomment">
+      {% form 'new_comment', article, class: 'article__comment-form' %}
+      {{ form.errors | default_errors }}
+
+        <div class="article__form-info">
+
+          <label class="regular-text article__form-label" for="CommentAuthor">name:</label>
+          <input class="article__form-input" type="text" name="comment[author]" id="CommentAuthor" placeholder="name" value="{{ form.author }}" autocapitalize="words" required>
+
+        </div>
+        
+        <div class="article__form-info">
+
+          <label class="regular-text article__form-label" for="CommentEmail">email:</label>
+          <input class="article__form-input" type="email" name="comment[email]" id="CommentEmail" placeholder="email" value="{{ form.email }}" autocorrect="off" autocapitalize="off" required>
+    
+        </div>
+        
+        <div class="article__form-message">
+
+          <label class="regular-text article__form-label" for="CommentBody">message:</label>
+          <textarea class="article__form-input" name="comment[body]" id="CommentBody" placeholder="message" maxlength="300" required>{{ form.body }}</textarea>
+
+        </div>
+  
+        <input class="hero__cto article__form-button" type="submit" value="Post Comment !">
+
+      {% endform %}
+    </div>
+  
+  
+    {% assign number_of_comments = article.comments_count %}
+    {% if comment and comment.created_at %}
+      {% assign number_of_comments = article.comments_count %}
+    {% endif %}
+    
+    
+    <div class="article__comments">
+      <span class="h1-description article__number-of-comments">{{ number_of_comments }} comments</span>
+      
+      {% paginate article.comments by 5 %}
+        {% for comment in article.comments %}
+
+            <div class="article__comment">
+              <div class="regular-text">{{ comment.content }}</div>
+              <span class='testimonial__author'>{{ comment.author }} @ {{ comment.created_at }}</span>
+            </div>
+
+        {% endfor %}
+
+        {% if paginate.pages > 1 %}
+          {{ paginate | default_pagination }}
+        {% endif %}
+
+      {% endpaginate %}
+  
+    </div>
+    
+  {% endif %}
+</div>
+
+
+
+{% style %}
+.article__hero::before {
+  background-image: url({{section.settings.bg-image | img_url: '2050x' }});
+}
+
+.article__header {
+  margin-top: calc(0rem - {{ section.settings.top-offset}}rem );
+}
+{% endstyle %}
+
+
+{% schema %}
+{
+  "name": "article-template",
+  "class": "article-template",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg-image",
+      "label": "set background image behind article header box"
+    },
+    {
+      "type": "textarea",
+      "id": "article-description",
+      "label": "brief article description"
+    },
+    {
+      "type": "range",
+      "id": "top-offset",
+      "label": "Negative section offset for overlapping",
+      "unit": "rem",
+      "min": -14,
+      "max": 14,
+      "step": 2,
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name":"bg-image"
+    }
+  ]
+}
+{% endschema %}

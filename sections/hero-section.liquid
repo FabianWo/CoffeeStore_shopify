@@ -1,0 +1,82 @@
+<div class="hero__elements">  
+
+  <span class="h1-heading">{{ section.settings.heading }}</span>
+  
+  <span class="h1-description">
+    {{ section.settings.hero-description }}
+  </span>
+  
+  <div class="hero__cto-container">
+    <a class="hero__cto-link" href="{{ section.settings.calltoaction-url }}">
+      <button class="hero__cto">{{ section.settings.buttontext }}</button>
+    </a>
+    <a class="hero__cto-link" href="{{ section.settings.calltoaction-url2 }}">
+      <button secondarycto class="hero__cto">{{ section.settings.buttontext2 }}</button>
+    </a>
+  </div>
+
+</div>
+
+
+{% style %}
+.section-hero::before {
+  background-image: url({{section.settings.hero-image | img_url: '2450x' }});
+}
+{% endstyle %}
+
+
+{% schema %}
+
+{
+  "name": "hero-section",
+  "tag": "section",
+  "class": "main__section section-hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero-image",
+      "label": "hero image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "section heading",
+      "default": "This is a section heading"
+    },
+    {
+      "type": "textarea",
+      "id": "hero-description",
+      "label": "hero section description",
+      "default": "This a short product description"
+    },
+    {
+      "type": "text",
+      "id": "buttontext",
+      "label": "Call to Action text",
+      "default": "Call to Action"
+    },
+    {
+      "type": "url",
+      "id": "calltoaction-url",
+      "label": "Destination for call to action button"
+    },
+    {
+      "type": "text",
+      "id": "buttontext2",
+      "label": "Call to Action 2 text",
+      "default": "Call to Action2"
+    },
+    {
+      "type": "url",
+      "id": "calltoaction-url2",
+      "label": "Destination for call to action button2"
+    }
+  ],
+  "presets": [
+    {
+      "name":"hero-section"
+    }
+  ]
+}
+
+{% endschema %}
