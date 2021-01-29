@@ -2,7 +2,7 @@
 
 <div class="article__header box-lightshadow">
 
-  <span class="article__heading">{{ article.title }}</span>
+  <span class="article__heading h2-heading">{{ article.title }}</span>
 
   <span class="regular-text article__excerpt">
     {{- article.excerpt | strip_html | truncatewords: 40 -}}
@@ -12,18 +12,35 @@
   {% capture date %}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>{% endcapture %}
   
   <span class="testimonial__author article__author">
-    ~ 10 minute read - {{ article.author }}  {{ article.created_at | date: format: 'abbreviated_date'}}
+    10 minute read
   </span>
 
 </div>
 
-<div class="article__content-wrapper">
+<div class="article__content-wrapper box-lightshadow">
+
+  <div class="article__content-tags">
+    {% for tags in article %}
+      
+    {% endfor %}
+    
+    <div class="article__content-tag regular-text">
+      {{ article.author }}
+    </div>
+  
+    <div class="article__content-tag regular-text">
+      {{ article.created_at | date: format: 'abbreviated_date'}}
+    </div>
+  </div>
 
   <div class="regular-text article__content">
     {{ article.content }}
   </div>
   
-  {% if blog.comments_enabled? %}
+</div>
+
+{% if blog.comments_enabled? %}
+<div class="article__content-wrapper box-lightshadow">
   
     <div class="article__newcomment">
       {% form 'new_comment', article, class: 'article__comment-form' %}
@@ -50,7 +67,7 @@
 
         </div>
   
-        <input class="hero__cto article__form-button" type="submit" value="Post Comment !">
+        <input class="hero__cta article__form-button" type="submit" value="Post Comment !">
 
       {% endform %}
     </div>
@@ -82,15 +99,14 @@
       {% endpaginate %}
   
     </div>
-    
-  {% endif %}
-</div>
+  </div>
+{% endif %}
 
 
 
 {% style %}
 .article__hero::before {
-  background-image: url({{section.settings.bg-image | img_url: '2050x' }});
+  background-image: url({{section.settings.bg-image | img_url: '1930x' }});
 }
 
 .article__header {

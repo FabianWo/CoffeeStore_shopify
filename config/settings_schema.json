@@ -29,6 +29,12 @@
         "default": "alegreya_n4"
       },
       {
+        "id": "font-tertiary",
+        "type": "font_picker",
+        "label": "tertiary font",
+        "default": "domine_n4"
+      },
+      {
         "id": "coloo",
         "type": "link_list",
         "label": "primary or"

@@ -1,13 +1,16 @@
-<div class="main__section blog__hero">
+<div class="main__section blog__hero"></div>
+
+<div class="blog__header box-lightshadow">
 
   <span class="h1-heading blog__heading">
     {{ blog.title }}
   </span>
 
-  <span class="h1-description blog__description">
+  <span class="blog__description regular-text">
     {{ section.settings.blog-description | truncate: 75 }}
   </span>
-</div>
+
+</div>  
 
 <div class="blog__articles">
 
@@ -43,7 +46,7 @@
       {% endif %}
   
       <span class="testimonial__author blog__article-author">
-        - {{ article.author | truncate: 30 }} @ {{ article.created_at | date: format: 'abbreviated_date'}}
+        {{ article.author | truncate: 30 }} @ {{ article.created_at | date: format: 'abbreviated_date'}}
       </span>
     </div>
 
@@ -61,10 +64,10 @@
 
 {% style %}
 .blog__hero::before {
-  background-image: url({{section.settings.bg-image | img_url: '2260x' }});
+  background-image: url({{section.settings.bg-image | img_url: '1930x' }});
 }
 
-.blog__articles {
+.blog__header {
   margin-top: calc(0rem - {{ section.settings.top-offset}}rem );
 }
 {% endstyle %}

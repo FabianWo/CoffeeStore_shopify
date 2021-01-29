@@ -3,7 +3,7 @@
 --- rough Organization rules ---
 
 1. general styles: root, body, html, container etc.
-2. styles that stay the same/reusable (font, color, line, ...)
+2. reusable styles/"utitily classes" (font, color, line, ...)
 3. specific purpose/element styles
 
 every section is ordered acccording to html structure
@@ -16,8 +16,17 @@ naming convention used: BEM
 
 /* dynamic font-face for shopify */
 
+{%- for variant in settings.font-primary.variants -%}
+  {%- if variant.style == 'normal' -%}
+  @font-face {
+    font-weight: {{variant.weight}};
+    src: url({{ variant | font_url }});
+    font-family: {{ settings.font-primary.family | append: variant.weight}};
+  }
+  {% endif %}
+{% endfor %}
 
-{%- for variant in settings.font-secondary.variants -%}
+{%- for variant in settings.font-secondary.varianhts -%}
   {%- if variant.style == 'normal' -%}
   @font-face {
     font-weight: {{variant.weight}};
@@ -27,13 +36,12 @@ naming convention used: BEM
   {% endif %}
 {% endfor %}
 
-
-{%- for variant in settings.font-primary.variants -%}
+{%- for variant in settings.font-tertiary.variants -%}
   {%- if variant.style == 'normal' -%}
   @font-face {
     font-weight: {{variant.weight}};
     src: url({{ variant | font_url }});
-    font-family: {{ settings.font-primary.family | append: variant.weight}};
+    font-family: {{ settings.font-tertiary.family | append: variant.weight}};
   }
   {% endif %}
 {% endfor %}
@@ -58,7 +66,7 @@ naming convention used: BEM
   --color-lightgrey: #F5F3F0;
   --shadow-box1: 2px 2px 12px rgba(0, 0, 0, 0.109), 0px 8px 12px -6px rgba(124, 124, 124, 0.15);
   color: black;
-  letter-spacing: -.06em;
+  letter-spacing: -.045em;
   font-family: {{ settings.font-primary.family | append: settings.font-primary.weight}};
 }
 
@@ -103,7 +111,7 @@ body {
   width: 80%;
 }
 
-/* ----- 2. REUSABLE STYLES ----- */
+/* ----- 2. REUSABLE STYLES / UTILITY CLASSES ----- */
 
 /* navigation */
 
@@ -125,14 +133,12 @@ body {
 }
 
 .h1-heading {
-  font-size: 4.5rem;
-  margin: 7rem 0 0;
-  line-height: 98px;
-  letter-spacing: -.04em;
+  font-size: 3.25rem;
+  letter-spacing: -.06em;
   
   
-  color: var(--color-darkblue);
-  font-family: {{ settings.font-secondary.family | append: '500'}};
+  color: black;
+  font-family: {{ settings.font-tertiary.family | append: '700'}};
 }
 
 .h1-description {
@@ -148,9 +154,16 @@ body {
   font-family: {{ settings.font-primary.family | append: '500'}};
 }
 
+.h2-heading {
+  font-size: 1.925rem;
+  letter-spacing: -.065em;
+
+  font-family: {{ settings.font-primary.family | append: '500'}};
+}
+
 .regular-text {
-  line-height: 1.45rem;
-  font-size: 1.25rem;
+  line-height: 1.5rem;
+  font-size: 1.125rem;
   font-family: {{ settings.font-primary.family | append: '400'}};
 }
 
@@ -172,24 +185,24 @@ body {
   background-color: var(--color-darkblue);
   color: white;
   width: 100%;
-  padding: 0.75rem 0;
+  padding: 0.65rem 0;
 }
 
 .nav-container {
-  display: flex;
-  width: 90%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  width: 70%;
 }
 
 .nav__list {
   display: flex;
   align-items: center;
-  margin: 0 auto;
 }
 
 .nav__list-side {
   display: flex;
   align-items: center;
-  /* margin-left: auto; */
+  justify-self: flex-end;
 }
 
 .nav__list-item {
@@ -232,7 +245,7 @@ body {
 .section-hero {
   position: relative;
   flex-direction: column;
-  justify-content: start;
+  justify-content: center;
   width: 100%;
   height: 36rem;
   overflow: hidden;
@@ -241,32 +254,33 @@ body {
 .hero__elements {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  max-width: 700px;
+  align-items: flex-start;
+  max-width: 550px;
+  margin-left: 55%;
 }
 
-.hero__cto-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 1rem;
-  margin-top: 2rem;
+.hero__heading {
+  text-shadow: 0px 0px 64px rgba(0, 0, 0, 0.84);
+  color: white;
 }
 
-.hero__cto {
-  width: 100%;
+.hero__cta-container {
+  margin-top: 1rem;
+}
+
+.hero__cta {
   padding: 0.85rem 1.3rem;
   font-size: 1.1rem;
   letter-spacing: -0.05em;
   color: white;
   white-space: nowrap;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 2px;
   background-color: var(--color-darkblue);
   font-family: {{ settings.font-primary.family | append: '400'}};
 }
 
-.hero__cto[secondarycto] {
+.hero__cta[secondarycta] {
   background-color: var(--color-espresso);
 }
 
@@ -304,7 +318,7 @@ body {
 .testimonial__author {
   justify-self: flex-end;
   margin-top: 0.6rem;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: #5f5f5f;
 }
 
@@ -368,34 +382,47 @@ body {
 .blog__hero {
   flex-direction: column;
   justify-content: flex-start;
-  background-color: rgba(207, 207, 207, 0.38);
+  background-color: rgba(207, 207, 207, 0.294);
   overflow: hidden;
-  height: 27.5rem;
+  height: 18rem;
 }
 
 .blog__hero::before {
   content: '';
   position: absolute;
   z-index: -10;
-  top: -2%;
-  left: -1%;
-  width: 140%;
-  height: 103%;
-  background-position: 0% 33%;
   background-repeat: no-repeat;
   background-size: auto;
   filter: blur(0.75px);
+  top: -2px;
+  left: -2px;
+  width: 120%;
+  height: 1060px;
+  background-position: 0% 70%;
+}
+
+.blog__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  z-index: 10;
+  width: 480px;
+  height: 220px;
+  padding: 3rem 2.5rem;
+  margin-top: 10rem;
 }
 
 .blog__heading {
-  margin-top: 5rem;
+  font-size: 2.5rem;
+  
+  font-family: {{ settings.font-primary.family | append: '500'}};
 }
 
 .blog__description {
   text-align: center;
-  max-width: 475px;
+  max-width: 380px;
   margin-top: 1rem;
-  letter-spacing: -.065em;
 }
 
 .blog__articles {
@@ -406,6 +433,7 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 10;
+  margin-top: 2rem;
 }
 
 .blog__article-wrapper {
@@ -414,7 +442,7 @@ body {
   overflow: hidden;
   transition: all 0.2s ease-out;
   width: 100%;
-  height: 225px;
+  height: 210px;
 }
 
 .blog__article-wrapper:hover {
@@ -464,6 +492,7 @@ body {
 }
 
 .article-template {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -471,9 +500,12 @@ body {
 
 
 .article__hero {
-  background-color: rgba(207, 207, 207, 0.38);
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: rgba(207, 207, 207, 0.294);
   overflow: hidden;
-  height: 23.5rem;
+  height: 18rem;
 }
 
 .article__hero::before {
@@ -491,26 +523,20 @@ body {
 }
 
 .article__header {
-  height: 250px;
-  width: 35%;
+  width: 480px;
+  height: 220px;
   display: flex;
   flex-direction: column;
-  align-content: center;
-  justify-self: flex-start;
-  padding: 3rem 4rem 0;
+  align-items: center;
+  padding: 3rem 2.5rem 0;
   align-self: center;
-  text-align: center;
   z-index: 10;
 }
 
-.article__heading {
-  font-size: 2.2rem;
-  letter-spacing: -.06em;
-  font-family: {{ settings.font-primary.family | append: '500'}}
-}
-
 .article__excerpt {
-  margin: 3rem 5rem 0;
+  text-align: center;
+  max-width: 380px;
+  margin-top: 2rem;
 }
 
 .article__author {
@@ -519,18 +545,33 @@ body {
 }
 
 .article__content-wrapper {
-  width: 45%;
+  max-width: 960px;
   align-self: center;
-  margin-top: 4rem;
+  padding: 2rem 6rem;
+  margin-top: 2rem;
+}
+
+.article__content-tags {
+  display: flex;
+}
+
+.article__content-tag {
+  margin-right: 0.75rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: 70px;
+  background-color: #F0F0F0;
+  color: black;
+  font-size: 0.875rem;
 }
 
 .article__content {
+  margin-top: 2rem;
   line-height: 1.6rem;
 }
 
 .article__newcomment {
   display: flex;
-  margin: 8rem auto 0;
+  margin: 2rem auto 0;
   width: 60%;
 }
 
@@ -542,26 +583,26 @@ body {
 
 .article__form-info {
   display: flex;
-  align-items: center;
   margin-bottom: 1rem;
 }
 
 .article__form-message {
   display: flex;
-  align-items: center;
 }
 
 .article__form-label {
   margin-right: 1.5rem;
+  margin-top: 0.35rem;
   width: 120px;
+  font-family: {{ settings.font-primary.family | append: '500'}};
 }
 
 .article__form-input {
-  padding: 0.45rem 0 0.25rem 0.5rem;
+  padding: 0.4rem 0 0.3rem 0.5rem;
   width: 100%;
   resize: none;
   border: 1px solid rgb(54, 54, 54);
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .article__form-message textarea {
@@ -590,7 +631,7 @@ body {
 .article__comment {
   display: flex;
   flex-direction: column;
-  margin-top: 4rem;
+  margin-top: 3rem;
 }
 
 
@@ -638,9 +679,8 @@ footer .nav__list-item {
   padding: 0.35rem 3.125rem;
 }
 
-
-@media (min-width: 1200px) {
+@media (max-width: 1200px) {
   .nav-container {
-    width: 67%;
+    width: 90%;
   }
 }
