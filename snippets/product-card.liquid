@@ -1,0 +1,36 @@
+{% for product in collection.products %}
+{% if forloop.index <= limit %}
+  
+
+<div class="product-card box-lightshadow">
+  
+  {{ product.images[0] | img_url: '600x' | img_tag: '', 'product-card__image' }}
+  
+  <span class="regular-text product-card__text">
+    {{ product.title }}
+  </span>
+  
+  <span class="product-card__price">
+    - {{ product.price | money_without_currency }} €
+  </span>
+  
+  <!-- <span class="product-card__compare-price"> -->
+    {% if product.variants.first.unit_price %}
+    
+    <span class="product-card__per-kg-price">
+      ( {{ product.variants.first.unit_price | money_without_currency }} € / kg )
+    </span>
+    {% endif %}
+    
+    <a class="product-card__link" href="{{ product.url }}">
+      <button class="button-black button-small product-card__button">zur Produktseite</button>
+    </a>
+    
+    <!-- <a class="hero__cta-link" href="{{  }}">
+      <button class="button-red button-small">In den Einkaufswagen</button>
+    </a> -->
+    
+  </div>
+
+{% endif %}
+{% endfor %}

@@ -60,6 +60,7 @@ naming convention used: BEM
 
   --color-espresso: {{ settings.coloryo }};
   --color-ctagreen: #609A98;
+  --color-submitred: #D26060;
   --color-darkblue: #0D1A1D;
   --color-darkbrown: #474138;
   --color-bg: #FAFAFA;
@@ -86,6 +87,7 @@ a {
 button {
   outline: none;
   border: none;
+  background-color: white;
 }
 
 body {
@@ -186,6 +188,57 @@ body {
   border-radius: 4px;
   box-shadow: var(--shadow-box1);
 }
+
+/* button styles 36 42 50*/
+
+.button-black {
+  white-space: nowrap;
+  cursor: pointer;
+  letter-spacing: -0.045em;
+  padding: 0.75rem 1.3rem;
+  font-size: 1.125rem;
+  border-radius: 4px;
+  color: black;
+  border: 1px solid black;
+  
+  font-family: {{ settings.font-primary.family | append: '500'}};
+}
+
+.button-black:hover {
+  background-color: black;
+}
+
+.button-red {
+  padding: 0.75rem 1.3rem;
+  font-size: 1.125rem;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+  cursor: pointer;
+  border-radius: 4px;
+  color: var(--color-submitred);
+  border: 1px solid var(--color-submitred); 
+  
+  font-family: {{ settings.font-primary.family | append: '500'}};
+  
+}
+
+.button-red:hover {
+  background-color: var(--color-submitred);
+}
+
+.button-small {
+  letter-spacing: -0.045em;
+  padding: 0.45rem 0;
+  font-size: 1.125rem;
+  min-width: 210px;
+  transition: all 0.3s;
+}
+
+.button-small:hover {
+  color: white;
+  font-family: {{ settings.font-primary.family | append: '600'}};
+}
+
 
 /* footer */
 
@@ -293,7 +346,7 @@ body {
 }
 
 .hero__cta {
-  padding: 0.85rem 1.3rem;
+  padding: 0.75rem 1.3rem;
   font-size: 1.425rem;
   letter-spacing: -0.065em;
   color: white;
@@ -313,12 +366,20 @@ body {
 
 .section-featured-links {
   width: 100%;
+  flex-direction: column;
+}
+
+.featured-links__heading {
+  margin-bottom: 4rem;
 }
 
 .featured-links-wrapper {
   display: flex;
   align-items: center;
   column-gap: 2rem;
+  row-gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .featured-link {
@@ -362,6 +423,7 @@ body {
   width: 100%;
   padding: 0 17%;
   z-index: 10;
+  flex-wrap: wrap;
 }
 
 .testimonial-wrapper {
@@ -370,6 +432,7 @@ body {
   position: relative;
   flex-direction: column;
   max-width: 280px;
+  min-width: 280px;
   padding: 1rem 0 0.5rem;
   margin: 4rem 1rem;
   text-align: center;
@@ -401,6 +464,65 @@ body {
   font-family: {{ settings.font-primary.family | append: '400'}};
 }
 
+/* featured products section */
+
+.section-featured-products {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.featured-products__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 2rem;
+  margin-top: 4rem;
+  justify-content: center;
+  row-gap: 2rem;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 3rem;
+}
+
+.product-card__image {
+  width: 230px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.product-card__text {
+  margin-top: 2rem;
+  font-size: 1.25rem;
+}
+
+.product-card__price {
+  margin-top: 0.5rem;
+  font-size: 1.5rem;
+
+  font-family: {{ settings.font-tertiary.family | append: '500'}};
+}
+
+.product-card__per-kg-price {
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
+  
+  color: #666666;
+  font-family: {{ settings.font-primary.family | append: '500'}}; 
+}
+
+.product-card__link {
+margin-top: auto;
+}
+
+.product-card__button {
+  margin-top: 1rem;
+  align-self: flex-end;
+}
 
 /* from order to customer steps section */
 

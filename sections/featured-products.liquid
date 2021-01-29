@@ -1,0 +1,56 @@
+{% assign collection = collections[section.settings.collection] %}
+
+ <span class="h2-heading-secondary">
+    {{ collection.title }}
+  </span>
+ 
+ <div class="featured-products__wrapper">
+   {% include 'product-card' , limit: section.settings.products-amount %}
+ </div>
+
+
+ {% style %}
+.section-featured-products {
+  margin-top: calc(0rem + {{ section.settings.top-offset}}rem );
+}
+{% endstyle %}
+
+ 
+ {% schema %}
+ {
+  "name": "section-featured-products",
+  "tag": "section",
+  "class": "section-featured-products",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection", 
+      "label": "select your featured collection"
+    },
+    {
+      "type": "range",
+      "id": "top-offset",
+      "label": "set section margin",
+      "unit": "rem",
+      "min": -8,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products-amount",
+      "label": "number of featured products",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "featured-products"
+    }
+  ]
+ }
+ {% endschema %}
