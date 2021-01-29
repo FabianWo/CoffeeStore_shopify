@@ -17,7 +17,7 @@
 
 {% style %}
 .section-testimonials {
-  margin-top: calc(0rem - {{ section.settings.top-offset}}rem );
+  margin-top: calc(0rem + {{ section.settings.top-offset}}rem );
 }
 {% endstyle %}
 
@@ -32,12 +32,12 @@
     {
       "type": "range",
       "id": "top-offset",
-      "label": "Negative section offset for overlapping",
+      "label": "set section margin",
       "unit": "rem",
-      "min": -14,
-      "max": 14,
-      "step": 2,
-      "default": 8
+      "min": -8,
+      "max": 8,
+      "step": 1,
+      "default": 4
     }
   ],
   "blocks": [

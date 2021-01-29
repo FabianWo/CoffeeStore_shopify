@@ -80,7 +80,7 @@
     
     
     <div class="article__comments">
-      <span class="h1-description article__number-of-comments">{{ number_of_comments }} comments</span>
+      <span class="article__number-of-comments">{{ number_of_comments }} comments</span>
       
       {% paginate article.comments by 5 %}
         {% for comment in article.comments %}

@@ -1,0 +1,84 @@
+<div class="featured-links-wrapper">
+
+  {% for link in section.blocks %}
+    <div class="featured-link">
+      
+      {% if link.settings.link-image %}
+        {{ link.settings.link-image | img_url: '490x350' | img_tag: '', 'featured-link__image' }}
+      {% else %}
+        {{ 'collection-1' | placeholder_svg_tag: 'featured-link__image' }}
+      {% endif %}
+      
+      <div class="featured-link__content">
+        <span class="h3-heading-main">
+          {{ link.settings.link-heading }}
+        </span>
+        <span class="regular-text featured-link__text">
+          {{ link.settings.link-text }}
+        </span>
+      </div>
+
+    </div>
+  {% endfor %}
+  
+</div>
+
+{% style %}
+.featured-link-wrapper {
+  background-image: url({{section.settings.bg-image | img_url: '1930x' }});
+}
+
+.section-featured-links {
+  margin-top: calc(0rem + {{ section.settings.top-offset}}rem );
+}
+{% endstyle %}
+
+
+{% schema %}
+{
+  "name": "featured-links",
+  "class": "main__section section-featured-links",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "top-offset",
+      "label": "set section margin",
+      "unit": "rem",
+      "min": -8,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "featured-link-settings",
+      "name": "featured-link-block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "link-image",
+          "label": "background image for the link box"
+        },
+        {
+          "type": "text",
+          "id": "link-heading",
+          "label": "text for the heading"
+        },
+        {
+          "type": "text",
+          "id": "link-text",
+          "label": "text for below the heading"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name":"featured-links"
+    }
+  ]
+}
+{% endschema %}

@@ -8,14 +8,8 @@
     "theme_support_url": "https:\/\/github.com\/Shopify\/themekit\/issues"
   },
   {
-    "name": "Colors",
+    "name": "settings",
     "settings": [
-      {
-        "id": "coloryo",
-        "type": "color",
-        "label": "primary color",
-        "default": "#95856A"
-      },
       {
         "id": "font-primary",
         "type": "font_picker",
@@ -26,23 +20,13 @@
         "id": "font-secondary",
         "type": "font_picker",
         "label": "secondary font",
-        "default": "alegreya_n4"
+        "default": "domine_n4"
       },
       {
         "id": "font-tertiary",
         "type": "font_picker",
         "label": "tertiary font",
-        "default": "domine_n4"
-      },
-      {
-        "id": "coloo",
-        "type": "link_list",
-        "label": "primary or"
-      },
-      {
-        "id": "coryo",
-        "type": "product",
-        "label": "primaor"
+        "default": "alegreya_n4"
       }
     ]
   }

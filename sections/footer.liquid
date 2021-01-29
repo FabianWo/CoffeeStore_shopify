@@ -1,7 +1,7 @@
 <div class="footer__container">
 
   <div class="logo-container">
-    <a href="/">{{ 'espresso-cup.svg'| asset_url | img_tag : 'espresso-cup logo', 'logo' }}</a>
+    <a href="/">{{ 'LOGO-espressocup.svg'| asset_url | img_tag : 'espresso-cup logo', 'logo' }}</a>
   </div>  
 
   {% assign test = 'test.test.test' | split: '.' %}
@@ -37,30 +37,6 @@
       
     </div>
   {%- endfor -%}
-  
-  <!-- <div class="nav__list-side">
-    <span class="nav__list-item"> <a class="nav__link" href="/login">login</a></span>
-    <span>
-      <a href="/cart">{{ 'cart-icon.svg' | asset_url | img_tag : '', 'cart-icon' }}</a>
-    </span>
-    
-    {% if shop.customer_accounts_enabled %}
-      {% if customer %}
-        <a class="nav__list-item" href="/account">account</a>
-        {{ 'log out'  | customer_logout_link }}
-      {% else %}
-        {{ 'log in ' | customer_login_link }}
-        {{ 'register' | customer_register_link }}
-      {% endif %}
-    {% endif %}
-
-    <div class="nav__link menu-button-text">Menu</div>
-    <div class="menu-button-stripes">
-      <div class="menu-button-stripe"></div>
-      <div class="menu-button-stripe"></div>
-    </div>
-    
-  </div> -->
 
 </div>
 
