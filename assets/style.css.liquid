@@ -487,6 +487,7 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 1.5rem 3rem;
+  max-width: 320px;
 }
 
 .product-card__image {
@@ -853,10 +854,6 @@ margin-top: auto;
   align-items: center;
 }
 
-footer .logo-container {
-  padding: 0 3.125rem;
-}
-
 .footer__list-container {
   display: flex;
   align-items: center;
@@ -868,19 +865,28 @@ footer .logo-container {
   height: 4px;
   border-radius: 100px;
   background-color: white;
+  margin-left: 2rem;
 }
 
 .footer__list {
   display: flex;
   flex-direction: column;
+  margin-left: 2rem;
 }
 
 footer .nav__list-item {
-  padding: 0.35rem 3.125rem;
+  padding: 0.5rem 0;
 }
 
 @media (max-width: 1200px) {
   .nav-container {
     width: 90%;
+  }
+}
+
+@media (max-width: 720px) {
+
+  .footer__list, .footer__list-container::before {
+    margin-left: 1rem;
   }
 }

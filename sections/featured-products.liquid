@@ -1,11 +1,19 @@
 {% assign collection = collections[section.settings.collection] %}
+{% assign limit = section.settings.products-amount %}
 
  <span class="h2-heading-secondary">
     {{ collection.title }}
   </span>
  
  <div class="featured-products__wrapper">
-   {% include 'product-card' , limit: section.settings.products-amount %}
+
+  {% for product in collection.products %}
+  {% if forloop.index <= limit %}
+
+    {% include 'product-card' , product: product %}
+    
+  {% endif %}
+  {% endfor %}
  </div>
 
 
