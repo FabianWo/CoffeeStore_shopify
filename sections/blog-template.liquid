@@ -2,7 +2,7 @@
 
 <div class="blog__header box-lightshadow">
 
-  <span class="h1-heading blog__heading">
+  <span class="h2-heading-main blog__heading">
     {{ blog.title }}
   </span>
 
@@ -37,11 +37,11 @@
   
       {% if article.excerpt.size > 0 %}
         <span class="blog__article-excerpt regular-text">
-          {{- article.excerpt | strip_html | truncatewords: 40 -}}
+          {{- article.excerpt | strip_html | truncatewords: 32 -}}
         </span>
       {% else %}
         <span class="blog__article-excerpt regular-text">
-          {{- article.content | strip_html | truncatewords: 40 -}}
+          {{- article.content | strip_html | truncatewords: 32 -}}
         </span>
       {% endif %}
   

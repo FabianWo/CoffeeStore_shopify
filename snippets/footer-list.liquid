@@ -1,40 +1,25 @@
-{%- for val in test -%}
-
-  <div class="footer__list-container">
-    
-    <ul class="footer__list">
-      
-      {% for link in linklists.main-menu.links %}
-        {% assign child_list_handle = link.title | handleize %}
-      
-        {% if linklists[child_list_handle].links != blank %}
-          <li class="nav__list-item">
-            <a class="nav__link" href="{{ link.url }}">
-              {{ link.title }}
-            </a>
-          </li>
-        
-        {% for childlink in linklists[child_list_handle].links %}
-        
-          <li class="nav__list-item">
-            <a class="nav__link" href="{{ childlink.url }}">
-              {{ childlink.title | escape }}
-            </a>
-          </li>
-
-        {% endfor %}]
-        
-        {% else %}
-          <li class="nav__list-item">
-            <a class="nav__link" href="{{ link.url }}">
-              {{ link.title }}
-            </a>
-          </li>
-        
-        {% endif %}
-      {% endfor %}
-    </ul>
-    
-  </div>
+<div class="footer__list-container">
   
-{%- endfor -%}
+  <a 
+  class="footer__heading nav__link footer__heading-link"
+  href="{{ linklists[list_handle].url }}">
+    {{ linklists[list_handle].title | truncate: 30, ''}}
+  </a>
+
+  <ul class="footer__list">
+
+  {% for link in linklists[list_handle].links %}
+  {% if forloop.index < 7 %}
+  
+  <li class="nav__list-item footer__list-item">
+    <a class="nav__link footer__link" href="{{ link.url }}">
+      {{ link.title | truncate: 30, ''}}
+    </a>
+  </li>
+  
+  {% endif %}
+  {% endfor %}
+
+  </ul>
+  
+</div>

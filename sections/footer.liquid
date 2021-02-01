@@ -2,25 +2,69 @@
 
   <div class="logo-container">
     <a href="/">{{ 'LOGO-espressocup.svg'| asset_url | img_tag : 'espresso-cup logo', 'logo' }}</a>
-  </div>  
+  </div>
+  
 
-  {% assign test = 'test.test.test.test.test' | split: '.' %}
-
-  {% for item in linklists.footer.links %}
-    {{ item.title }}
-    {{ item.links[0].title }}
+  <div class="footer__lists">
+    {% for block in section.blocks %}
     
-  {% endfor %}
-
-  <!-- {% include 'footer-list' %} -->
-
+    {% if block.type == 'footer-list' %}
+      {% include 'footer-list' , list_handle: block.settings.selected-list %}
+    {% endif %}
+    
+    {% endfor %}
+  </div>
+  
 </div>
 
+<div class="footer__extras">
+  
+  <div class="social-icons">
+
+    {% for block in section.blocks %}
+    
+    {% if block.type == 'social' %}
+    <div class="logo-container">
+      <a href="/">{{ block.settings.social-icon | img_url: '48x' | img_tag : 'social-icon', 'logo' }}</a>
+    </div>
+    {% endif %}
+    
+    {% endfor %}
+  </div>
+
+  <span class="copyright">Copyright Fantasycoffee - 2021</span>
+</div>
 
 {% schema %}
 {
   "name": "footer",
   "tag": "footer",
-  "class": "footer"
+  "class": "footer",
+  "blocks": [
+    {
+      "name": "footer-list",
+      "type": "footer-list",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "selected-list",
+          "label": "choose a list for the footer"
+        }
+      ]
+    },
+    {
+      "name": "social-icons",
+      "type": "social",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "social-icon",
+          "label": "upload a social icon"
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}

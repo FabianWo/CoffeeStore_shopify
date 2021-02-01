@@ -2,7 +2,7 @@
 
 <div class="article__header box-lightshadow">
 
-  <span class="article__heading h2-heading">{{ article.title }}</span>
+  <span class="article__heading h2-heading-secondary">{{ article.title }}</span>
 
   <span class="regular-text article__excerpt">
     {{- article.excerpt | strip_html | truncatewords: 40 -}}
@@ -66,8 +66,9 @@
           <textarea class="article__form-input" name="comment[body]" id="CommentBody" placeholder="message" maxlength="300" required>{{ form.body }}</textarea>
 
         </div>
+
+        <button class="button-red article__form-button" type="submit" value="Post Comment !">Post Comment !</button>
   
-        <input class="hero__cta article__form-button" type="submit" value="Post Comment !">
 
       {% endform %}
     </div>
