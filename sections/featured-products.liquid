@@ -6,14 +6,10 @@
   </span>
  
  <div class="featured-products__wrapper">
+  {% assign products = collection.products %}
 
-  {% for product in collection.products %}
-  {% if forloop.index <= limit %}
+  {% render 'product-card' for products as product, limit: limit %}
 
-    {% include 'product-card' , product: product %}
-    
-  {% endif %}
-  {% endfor %}
  </div>
 
 

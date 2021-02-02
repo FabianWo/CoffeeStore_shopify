@@ -62,6 +62,7 @@ naming convention used: BEM
   --color-ctagreen: #609A98;
   --color-submitred: #D26060;
   --color-darkblue: #0D1A1D;
+  --color-navdivider: rgb(114, 114, 114);
   --color-darkbrown: #474138;
   --color-bg: #FAFAFA;
   --color-creme: #FFF6E5;
@@ -146,14 +147,14 @@ body {
 }
 
 .h2-heading-main {
-  font-size: 3rem;
-  letter-spacing: -.065em;
+  font-size: 2.75rem;
+  letter-spacing: -.06em;
 
-  font-family: {{ settings.font-primary.family | append: '500'}};
+  font-family: {{ settings.font-secondary.family | append: '700'}};
 }
 
 .h3-heading-main {
-  font-size: 2.375rem;
+  font-size: clamp(2rem, 6vw, 2.375rem);
   letter-spacing: -.065em;
   color: white;
   text-shadow: 0px 4px 26px rgba(0, 0, 0, 0.25), 0px 0px 50px #0D1A1D;
@@ -250,32 +251,53 @@ body {
 
 .nav {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   background-color: var(--color-darkblue);
-  color: white;
   width: 100%;
-  padding: 0.65rem 0;
 }
 
 .nav-container {
-  display: grid;
-  grid-template-columns: 1fr 0.75fr 1fr;
-  width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  justify-content: space-between;
+  width: 65%;
+  padding: 0.65rem 0;
+  column-gap: 0.5rem;
+}
+
+.nav-container:nth-child(2n) {
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.nav-container:nth-child(2n)::before {
+  content: '';
+  position: absolute;
+  justify-self: center;
+  width: 102%;
+  height: 1px;
+  background-color: var(--color-navdivider);
+  top: 0%;
+  left: -2%;
 }
 
 .nav__list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
   justify-content: center;
   column-gap: 1.5rem;
+  row-gap: 0.5rem;
 }
 
 .nav__list-side {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-self: flex-end;
+  justify-content: start;
   column-gap: 1rem;
 }
 
@@ -301,7 +323,6 @@ body {
 .nav__searchbar {
   position: relative;
   display: flex;
-  margin-left: 2rem;
   transition: width 0.5s;
   align-items: center;
 }
@@ -314,10 +335,11 @@ body {
   border: none;
   outline: none;
   border-radius: 2px;
-  padding: 0.5rem 0 0.35rem 0.5rem;
+  padding: 0.55rem 0 0.35rem 0.5rem;
   top: 0%;
   left: 0%;
-  width: min-content;
+  width: 230px;
+  background-color: #eeeeee;
 }
 
 .searchbar__input::placeholder {
@@ -331,7 +353,6 @@ body {
 .nav__search-icon {
   padding: 3px 0;
   margin-left: 0.5rem;
-  /* background-color: #1c3033; */
 }
 
 .nav__cart-icon {
@@ -380,8 +401,7 @@ body {
 }
 
 .hero__heading {
-  text-shadow: 0px 0px 64px rgba(0, 0, 0, 0.84);
-  color: white;
+  text-shadow: 0px 0px 64px rgba(0, 0, 0, 0.84); 
 }
 
 .hero__cta-container {
@@ -458,7 +478,7 @@ body {
 
 .featured-link__text {
   color: white;
-  font-size: 1.375rem;
+  font-size: clamp(1.25rem, 6vw, 1.375rem);
 }
 
 
@@ -883,6 +903,35 @@ margin-top: auto;
   margin-top: 3rem;
 }
 
+/* page template */
+
+.page__template {
+  flex-direction: column;
+  width: max(300px, 80%);
+  max-width: 750px;
+}
+
+.page__heading {
+  margin-top: 4rem;
+}
+
+.page__content {
+  margin-top: 4rem;
+}
+
+/* product-template */
+
+.product__template {
+  width: 65%;
+  flex-direction: column;
+}
+
+.breadcrumb__link {
+  color: #464646;
+  font-size: 0.875rem;
+
+  font-family: {{ settings.font-primary.family | append: '500'}}
+}
 
 /*  footer */
 
@@ -976,7 +1025,7 @@ margin-top: auto;
   position: absolute;
   width: 100%;
   height: 1px;
-  background-color: rgb(114, 114, 114);
+  background-color: var(--color-navdivider);
 }
 
 @media (max-width: 1200px) {
@@ -996,6 +1045,14 @@ margin-top: auto;
 
 @media (max-width: 800px) {
 
+  .nav__list {
+    row-gap: 0;
+  }
+
+  .nav__list-item {
+    padding: 0.5rem 0;
+  }
+
   .section-hero::before {
     height: 500px;
   }
@@ -1010,7 +1067,6 @@ margin-top: auto;
     margin-bottom: 8rem;
   }
   
-
   
 }
 
@@ -1020,6 +1076,15 @@ margin-top: auto;
   /* .footer__list  {
     margin-left: 1rem;
   } */
+  
+  .nav-container {
+    width: 90%;
+  }
+
+  .nav__list-side {
+    margin-top: 1rem;
+    row-gap: 0.5rem;
+  }
 
   .hero__elements {
     margin-left: 10%;
