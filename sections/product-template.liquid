@@ -1,7 +1,11 @@
 {% assign current_variant = product.selected_or_first_available_variant %}
 {% assign featured_image = current_variant.featured_image | default: product.featured_image %}
 
-<!-- Variants
+{%- comment -%}
+
+Testing/Help for Variants, Options
+  
+Variants
 {% for variant in product.variants %}
 <div>
 
@@ -23,7 +27,9 @@ Options
     {{ option.values }}
 
 </div>
-{% endfor %} -->
+{% endfor %}
+
+{%- endcomment -%}
 
 <div class="product__breadcrumb">
   {% render 'breadcrumb' %}
@@ -53,19 +59,18 @@ Options
       <span class="product__price">
         - {{ product.price | money_without_currency }} €
       </span>
-      
+
       {% if product.variants.first.unit_price %}
         <span class="product__per-kg-price">
           ( {{ product.variants.first.unit_price | money_without_currency }} € / kg )
         </span>
       {% endif %}
-
     </div>
     
     <div class="product__description regular-text">{{ product.description }}</div>
 
     <form class="product__form" action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
-    
+
       {% for product_option in product.options_with_values %}
         <fieldset class="product__form-fieldset" name="id">
         <div class="product__form-variant-wrapper">
@@ -84,7 +89,7 @@ Options
 
               </div>
             {% endfor %}
-            
+
           </div>
 
         </div>          
@@ -92,9 +97,22 @@ Options
 
       {% endfor %}
       
+      <select class="product__variant-select" name="id" id="">
+
+        {% for variant in product.variants %}
+          <option
+            id="{{ variant.title }}"
+            value="{{ variant.id }}">
+              {{ variant.title }}
+          </option>
+        {% endfor %}
+
+      </select>
+      
       <div class="product__form-control">
         <label class="product__form-label" for="Quantity">Anzahl:</label>
-        <input class="button-black button-small product__form-input" type="number" id="Quantity" name="quantity" value="1" min="1">
+        <input class="button-black button-small product__form-quantity-input" type="number" id="Quantity" name="quantity" value="1" min="1">
+
       </div>
 
       <button class="button-red" type="submit" name="add" id="AddToCart">
@@ -107,15 +125,6 @@ Options
   
 </div>
 
-
-{% javascript %}
-    let data;
-    var cartContents = fetch('/cart.js')
-    .then(response => response.json())
-    .then( (res) => {
-      console.log(res);
-    });
-{% endjavascript %}
 
 {% schema %}
 {

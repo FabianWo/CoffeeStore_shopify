@@ -244,7 +244,8 @@ body {
   transition: all 0.3s;
 }
 
-.button-small:hover, .button-small:focus {
+.button-small:hover,
+.button-small:focus {
   font-family: {{ settings.font-primary.family | append: '600'}};
 }
 
@@ -992,7 +993,7 @@ margin-top: auto;
   display: flex;
   flex: 1 0 40%;
   flex-direction: column;
-  row-gap: 1rem;
+  row-gap: 2rem;
   max-width: 100%;
 }
 
@@ -1026,7 +1027,7 @@ margin-top: auto;
 .product__form {
   display: flex;
   flex-direction: column;
-  row-gap: 1rem;
+  row-gap: 1.5rem;
 }
 
 .product__form-fieldset {
@@ -1069,6 +1070,7 @@ margin-top: auto;
   min-width: 100px;
 }
 
+.product__form-option-input:hover + .product__form-option-label,
 .product__form-option-input:checked + .product__form-option-label  {
   background-color: black;
   color: white;
@@ -1085,18 +1087,33 @@ margin-top: auto;
 }
 
 .product__form-label {
+  pointer-events: none;
   font-size: 1.25rem;
 
   letter-spacing: -.065em;
   font-family: {{ settings.font-primary.family | append: '500'}};
 }
 
-.product__form-input {
+.product__form-quantity-input {
   max-width: 31%;
 }
 
-.product__form-input:focus {
+.product__form-quantity-input:focus {
   outline: none;
+}
+
+.product__form-quantity-input:hover,
+.product__form-quantity-input:focus {
+  background-color: white;
+  color: black;
+}
+
+::-webkit-inner-spin-button {
+  /* appearance: none; */
+}
+
+.product__variant-select {
+  display: none;
 }
 
 /* breadcrumb */
@@ -1134,6 +1151,28 @@ margin-top: auto;
 
   font-family: {{ settings.font-primary.family | append: '600'}}
 }
+
+/* cart template */
+
+.cart__heading {
+  margin-top: 4rem;
+}
+
+.cart__items {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 4rem;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4rem clamp(1.5rem, 4vw, 5rem);
+  row-gap: 2rem;
+  column-gap: 4rem;
+}
+
+.cart__item-wrapper {
+  display: flex;
+}
+
 
 /*  footer */
 
@@ -1219,6 +1258,11 @@ margin-top: auto;
 .social-icons {
   display: flex;
   column-gap: 1.5rem;
+}
+
+.social-icon {
+  display: block;
+  width: 48px;
 }
 
 .footer__extras::before {
