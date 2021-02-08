@@ -73,13 +73,28 @@
   
 </div>
 
-<div>
-  <p>sub total : {{ cart.total_price | money }}</p>
-  <button form="cart-form" type="submit" name="update">Update</button>
-  <button form="cart-form" type="submit" name="checkout">Checkout</button>
+<div class="box-lightshadow cart__checkout-box">
+
+  <div class="cart__checkout-text-wrapper">
+    <span class="cart__checkout-sum cart__checkout-sum-shipping">Versandkosten: </span>
+    <span class="cart__item-line-price cart__total">
+      {{ checkout.shipping_price | money_without_currency }} {{ shop.currency }}
+    </span>
+  </div>
+
+  <div class="cart__checkout-text-wrapper">
+    <span class="cart__checkout-sum">Gesamtsumme: </span>
+    <span class="cart__item-heading h2-heading-secondary cart__total">
+      {{ cart.total_price | money_without_currency }} {{ shop.currency }}
+    </span>
+  </div>
+
+  <!-- <button form="cart-form" type="submit" name="update">Update</button> -->
+  <button class="button-red" form="cart-form" type="submit" name="checkout">Zur Kasse</button>
 </div>
 
 {% else %}
+<!-- keine items im Einkaufswagen -->
 
   <h1 class="h2-heading-main">Einkaufswagen</h1>
   <span class="regular-text">
