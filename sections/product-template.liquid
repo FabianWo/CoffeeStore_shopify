@@ -111,7 +111,24 @@ Options
       
       <div class="product__form-control">
         <label class="product__form-label" for="Quantity">Anzahl:</label>
-        <input class="button-black button-small product__form-quantity-input" type="number" id="Quantity" name="quantity" value="1" min="1">
+
+        <button type="button" class="button-black button-small cart__form-quantity-button product__form-quantity-button">
+
+          <input class="cart__quantity-input product__form-quantity-input" type="number" name="quantity" id="Quantity" value="1" min="1" max="9" maxlength="1">
+
+          <ul class="cart__quantity-list box-lightshadow">
+            <li value="1" class="cart__quantity-list-item">1</li>
+            <li value="2" class="cart__quantity-list-item">2</li>
+            <li value="3" class="cart__quantity-list-item">3</li>
+            <li value="4" class="cart__quantity-list-item">4</li>
+            <li value="5" class="cart__quantity-list-item">5</li>
+            <li value="6" class="cart__quantity-list-item">6</li>
+            <li value="7" class="cart__quantity-list-item">7</li>
+            <li value="8" class="cart__quantity-list-item">8</li>
+            <li value="9" class="cart__quantity-list-item">9</li>
+          </ul>
+
+        </button>
 
       </div>
 

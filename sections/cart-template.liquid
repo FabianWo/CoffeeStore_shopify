@@ -39,13 +39,24 @@
         <!-- {{ item.price | money }} -->
 
         <div class="cart__form-quantity-remove-wrapper">
-          <div class="button-black button-small cart__form-quantity-box">
+          <button data-line-item-key="{{ forloop.index0 }}" value="{{ item.variant_id }}" type="button" class="button-black button-small cart__form-quantity-button">
             <span>Anzahl:</span>
-            <input class="cart__form-quantity" type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0" max="9">
+            <input class="cart__quantity-input" type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0" max="9" maxlength="1">
+            <ul class="cart__quantity-list box-lightshadow">
+              <li value="1" class="cart__quantity-list-item">1</li>
+              <li value="2" class="cart__quantity-list-item">2</li>
+              <li value="3" class="cart__quantity-list-item">3</li>
+              <li value="4" class="cart__quantity-list-item">4</li>
+              <li value="5" class="cart__quantity-list-item">5</li>
+              <li value="6" class="cart__quantity-list-item">6</li>
+              <li value="7" class="cart__quantity-list-item">7</li>
+              <li value="8" class="cart__quantity-list-item">8</li>
+              <li value="9" class="cart__quantity-list-item">9</li>
+            </ul>
 
-          </div>
+          </button>
           
-          <a class="cart__item-remove" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">Löschen</a>
+          <a value="{{ item.variant_id }}" class="cart__item-remove" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">Löschen</a>
         </div>
 
       </div>
@@ -57,7 +68,7 @@
         </span>
         {% endif %}
 
-        <span class="cart__item-line-price">
+        <span id="itemPrice" class="cart__item-line-price">
           {{ item.line_price | money_without_currency }}
         </span>
   
@@ -77,15 +88,16 @@
 
   <div class="cart__checkout-text-wrapper">
     <span class="cart__checkout-sum cart__checkout-sum-shipping">Versandkosten: </span>
-    <span class="cart__item-line-price cart__total">
-      {{ checkout.shipping_price | money_without_currency }} {{ shop.currency }}
+    <span id="cart-shipping" class="cart__item-line-price cart__total">
+      {{ shipping_method.title }} {{ shop.currency }}
     </span>
   </div>
 
   <div class="cart__checkout-text-wrapper">
     <span class="cart__checkout-sum">Gesamtsumme: </span>
     <span class="cart__item-heading h2-heading-secondary cart__total">
-      {{ cart.total_price | money_without_currency }} {{ shop.currency }}
+      <p id="cart-total">{{ cart.total_price | money_without_currency }}</p>
+      <p>{{ shop.currency }}</p>
     </span>
   </div>
 
@@ -96,10 +108,12 @@
 {% else %}
 <!-- keine items im Einkaufswagen -->
 
-  <h1 class="h2-heading-main">Einkaufswagen</h1>
-  <span class="regular-text">
-    Einkaufswagen ist leer. <a href="/products">Zu allen Produkten</a>
-  </span>
+  <h1 class="h2-heading-main cart__heading">Einkaufswagen</h1>
+  <div class="cart__content box-lightshadow ">
+    <span class="regular-text">
+      Einkaufswagen ist leer. <a class="h2-heading-secondary" href="/products">Zu allen Produkten</a>
+    </span>
+  </div>
 
 {% endif %}
 
