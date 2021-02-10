@@ -2,17 +2,20 @@
 
   <span class="breadcrumb__divider" aria-hidden="true">&#8211;</span>
   <a class="breadcrumb__link" href="/" title="Home">Home</a>
-  <span class="breadcrumb__divider"  aria-hidden="true">&#62;</span>
-  <a class="breadcrumb__link" href="/collections/all" title="Alle Produkte">
-    {{ product.collections[0].title }}
-  </a>
-
-
+  
+  
   {% if template contains 'product' %}
+  
+    <span class="breadcrumb__divider"  aria-hidden="true">&#62;</span>
+    <a class="breadcrumb__link" href="/collections/all" title="Alle Produkte">
+      Alle Produkte
+    </a>
 
-    {% if collection.url %}
+    {{ collection.url }}
+
+    {% if product.collections[0] %}
       <span class="breadcrumb__divider"  aria-hidden="true">&#62;</span>
-      <a class="breadcrumb__link" title="{{ collection.title }}" href="{{ collection.url }}">{{ collection.title }}</a>
+      <a class="breadcrumb__link" title="{{ product.collections[0].title }}" href="{{ product.collections[0].url }}">{{ product.collections[0].title }}</a>
 
     {% endif %}
 
@@ -20,7 +23,7 @@
     <span class="breadcrumb__link" title="{{ product.title}}">{{ product.title }}</span>
 
   {% elsif template contains 'collection' and collection.handle %}
-
+    
     <span class="breadcrumb__divider"  aria-hidden="true">&#62;</span>
 
     {% if current_tags %}
@@ -33,7 +36,7 @@
 
     {% else %}
 
-      <span class="breadcrumb__link" title="{{ collection.title }}">{{ collection.title }}</span>
+      <span class="breadcrumb__link" title="{{ collection.title }}">Alle Produkte</span>
 
     {% endif %}
 

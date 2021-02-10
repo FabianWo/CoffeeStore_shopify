@@ -71,6 +71,7 @@ Options
 
     <form class="product__form" action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
 
+      {% if product.has_only_default_variant == false %}
       {% for product_option in product.options_with_values %}
         <fieldset class="product__form-fieldset" name="id">
         <div class="product__form-variant-wrapper">
@@ -97,6 +98,7 @@ Options
 
       {% endfor %}
       
+      {% endif %}
       <select class="product__variant-select" name="id" id="">
 
         {% for variant in product.variants %}
@@ -108,7 +110,7 @@ Options
         {% endfor %}
 
       </select>
-      
+
       <div class="product__form-control">
         <label class="product__form-label" for="Quantity">Anzahl:</label>
 
@@ -146,7 +148,7 @@ Options
 {% schema %}
 {
   "name": "product-template",
-  "class": "product__template main__section",
+  "class": "product-template main__section",
   "tag": "div"
 }
 {% endschema %}

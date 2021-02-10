@@ -40,7 +40,7 @@
 </div>
 
 {% if blog.comments_enabled? %}
-<div class="article__content-wrapper box-lightshadow">
+<div class="article__content-wrapper article__comment-wrapper box-lightshadow">
   
     <div class="article__newcomment">
       {% form 'new_comment', article, class: 'article__comment-form' %}

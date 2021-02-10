@@ -24,17 +24,20 @@
       <div class="cart__item-details">
 
         <h2 class="h2-heading-secondary">
-          <a class="cart__item-heading" href="{{ item.url }}">{{ item.product.title }}</a>
+          <a class="text-black" href="{{ item.url }}">{{ item.product.title }}</a>
         </h2>
 
         <!-- {% for discount in item.discounts %}{{ discount.title }}{% endfor %} -->
-
+        {{ }}
+        {% if item.variant.options[0] contains 'Default' %}
+        {% else %}
         {% for value in item.variant.options %}
         
         <span class="cart__item-option">
           {{ item.options_with_values[forloop.index0].name }}: {{ value }}
         </span>
         {% endfor %}
+        {% endif %}
         
         <!-- {{ item.price | money }} -->
 
@@ -95,7 +98,7 @@
 
   <div class="cart__checkout-text-wrapper">
     <span class="cart__checkout-sum">Gesamtsumme: </span>
-    <span class="cart__item-heading h2-heading-secondary cart__total">
+    <span class="text-black h2-heading-secondary cart__total">
       <p id="cart-total">{{ cart.total_price | money_without_currency }}</p>
       <p>{{ shop.currency }}</p>
     </span>
@@ -121,7 +124,7 @@
 {% schema %}
 {
   "name": "product-template",
-  "class": "main__section cart__template",
+  "class": "main__section cart-template",
   "tag": "div"
 }
 {% endschema %}
