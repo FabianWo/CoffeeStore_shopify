@@ -1,0 +1,30 @@
+{% if collection.default_sort_by %}
+{% for option in collection.sort_options %}
+  {% if option.value == collection.default_sort_by %}
+  {% assign default_sort = option %}
+  {% endif %}
+{% endfor %}
+{% endif %}
+
+<div class="collection-filter">
+  <span class="collection-filter__text">Sortieren nach:&nbsp;&nbsp;</span>
+  <button value="" class="collection-filter__button cart__form-quantity-button">
+    <span class="cart__quantity-input collection-filter__input"></span>
+    <span id="displayValue">{{ default_sort.name }}</span>
+    <input class="cart__quantity-input collection-filter__input" type="text"
+    name="{{ default_sort.value }}"
+    value="{{ default_sort.name }}">
+    {{ 'sortMenuArrow.svg'| asset_url | img_tag : 'sortList Arrow', 'collection-filter__arrow' }}
+
+    <ul class="cart__quantity-list box-lightshadow collection-filter__list">
+
+      {% for option in collection.sort_options %}
+        <li value="{{ option.name }}" name="{{ option.value }}" class="cart__quantity-list-item collection-filter__list-item">
+          {{ option.name }}
+        </li>
+      {% endfor %}
+
+    </ul>
+    
+  </button>
+</div>

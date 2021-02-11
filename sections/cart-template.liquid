@@ -43,7 +43,7 @@
 
         <div class="cart__form-quantity-remove-wrapper">
           <button data-line-item-key="{{ forloop.index0 }}" value="{{ item.variant_id }}" type="button" class="button-black button-small cart__form-quantity-button">
-            <span>Anzahl:</span>
+            <span>Anzahl: <span id="displayValue">{{ item.quantity }}</span></span>
             <input class="cart__quantity-input" type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0" max="9" maxlength="1">
             <ul class="cart__quantity-list box-lightshadow">
               <li value="1" class="cart__quantity-list-item">1</li>

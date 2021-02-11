@@ -11,13 +11,24 @@
   undefined;
   let chosenProductOptions = [null, null];
 
+  // collection page
+  const sortCollectionChoices = [...document?.querySelectorAll('.collection-filter__list-item')]
+  .map( el => el.getAttribute('value'));
+
   // cart page variables
   const cartItemQuantityButtons = document.querySelectorAll('.cart__form-quantity-button');
-  const quantityInputs = document.querySelectorAll('input[name="updates[]"]');
   const cartItemRemoveButtons = document.querySelectorAll('.cart__item-remove');
   const cartItemPrices = [...document?.querySelectorAll('#itemPrice')];
+  
+  console.log(cartItemQuantityButtons);
 
   // FUNCTIONS
+
+  // collection pages
+
+  const filterProductView = () => {
+    
+  };
 
   // product page
   const setChosenProductOptions = () => {
@@ -57,20 +68,33 @@
     }
   };
 
-  // cart page
+  // dropdown selectors on cart, product, collection pages
   const handleQuantitySelect = (e, button) => {
-    const target = e.target;
-    if (target.tagName === 'LI' && target.value > 0 && target.value < 10) {
-      button.querySelector('input').value = target.value;
-      updateCartItem(button, target.value);
+    const targetElement = e.target;
+    const newValue = targetElement.getAttribute('value');
+    const input = button.querySelector('input');
+    const displayElement = button.querySelector('#displayValue');
+
+    if ( targetElement.tagName === 'LI' && newValue > 0 && newValue < 10 ) {
+      if ( input.getAttribute('type') === 'number' ) {
+        input.value = newValue;
+        displayElement.innerHTML = `${newValue}`;
+        updateCartItemData(button, newValue);
+        button.blur();
+      } 
+    } else if ( targetElement.tagName === 'LI' && input.getAttribute('type') === 'text' 
+    && sortCollectionChoices.includes(newValue) ) {
+      input.value = newValue;
+      displayElement.innerHTML = newValue;
       button.blur();
     }
   };
 
-  const updateCartItem = async (item, quantity) => {
+  const updateCartItemData = async (item, quantity) => {
+    const lineItemKey = item.dataset.lineItemKey;
+    if ( !lineItemKey ) { return };
     const variantId = parseInt(item.getAttribute('value'));
     const newVariantQuantity = quantity;
-    const lineItemKey = item.dataset.lineItemKey;
     const data = {
       updates: {
         [variantId]: newVariantQuantity,
@@ -125,7 +149,7 @@
   cartItemRemoveButtons?.forEach( (button) => {
     button.addEventListener('click', (e) => {
       e.preventDefault();
-      updateCartItem(button, 0);
+      updateCartItemData(button, 0);
       button.closest('div[class="cart__item-wrapper"]')
       .previousElementSibling.remove();
       button.closest('div[class="cart__item-wrapper"]').remove();

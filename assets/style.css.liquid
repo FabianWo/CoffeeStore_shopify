@@ -286,7 +286,7 @@ body {
 .cart__form-quantity-button {
   position: relative;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   width: 100px;
   padding: 0.5rem 0 0.5rem;
@@ -309,17 +309,10 @@ body {
 }
 
 .cart__quantity-input {
-  border: none;
-  outline: none;
-  position: relative;
-  z-index: 10;
-  width: 24px;
+  visibility: hidden;
+  position: absolute;
+  z-index: -10;
   pointer-events: none;
-}
-
-.cart__quantity-input::-webkit-inner-spin-button {
-  appearance: none;
-  display: none;
 }
 
 .cart__quantity-input:hover {
@@ -338,7 +331,6 @@ body {
   border: 1px solid rgb(66, 66, 66);
   border-radius: 4px;
   background-color: white;
-  text-align: center;
   overflow: hidden;
   visibility: hidden;
   opacity: 0;
@@ -346,7 +338,7 @@ body {
 }
 
 .cart__quantity-list-item {
-  padding: 0.25rem 0;
+  padding: 0.25rem 0.5rem;
 }
 
 .cart__quantity-list-item:hover {
@@ -1242,7 +1234,7 @@ margin-top: auto;
   display: none;
 }
 
-/* breadcrumb */
+/* breadcrumb snippet */
 
 .breadcrumb {
   display: flex;
@@ -1278,6 +1270,60 @@ margin-top: auto;
   font-family: {{ settings.font-primary.family | append: '600'}}
 }
 
+/* collection-filter snippet */
+
+.collection-filter {
+  display: flex;
+}
+
+.collection-filter__text {
+  color: #5f5f5f;
+  font-size: 0.875rem;
+  white-space: nowrap;
+
+  font-family: {{ settings.font-primary.family | append: '500'}}
+}
+
+.collection-filter__button {
+  padding: 0;
+  color: #000000;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  letter-spacing: -0.055em;
+  justify-content: flex-start;
+
+  font-family: {{ settings.font-primary.family | append: '600'}}
+}
+
+.collection-filter__button:hover {
+  font-family: {{ settings.font-primary.family | append: '600'}}
+}
+
+.collection-filter__input {
+  /* width: auto; */
+  letter-spacing: -0.055em;
+}
+
+.collection-filter__list {
+  width: auto;
+  border: 1px solid rgb(88, 88, 88);
+}
+
+.collection-filter__list-item {
+  padding: 0.35rem 0.5rem;
+  text-align: start;
+  font-family: {{ settings.font-primary.family | append: '500'}}
+}
+
+.collection-filter__list-item:hover {
+  font-family: {{ settings.font-primary.family | append: '600'}}
+}
+
+.collection-filter__arrow {
+  position: relative;
+}
+
+
 /* collection-template */
 
 .collection-template {
@@ -1293,6 +1339,11 @@ margin-top: auto;
   padding: 4rem clamp(0.5rem, 5vw, 8rem);
   width: max(300px, 90%);
   max-width: 1400px;
+}
+
+.collection__breadcrumb-and-sort {
+  display: flex;
+  justify-content: space-between;
 }
 
 .collection__products {
