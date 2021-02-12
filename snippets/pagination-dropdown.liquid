@@ -1,4 +1,4 @@
-{% if collection.sort_by %}
+<!-- {% if collection.sort_by %}
   {% for option in collection.sort_options %}
     {% if option.value == collection.sort_by %}
       {% assign current_sort = option %}
@@ -12,13 +12,13 @@
       {% assign current_sort = option %}
     {% endif %}
   {% endfor %}
-{% endif %}
+{% endif %} -->
 
 <div class="collection-filter">
   <span class="collection-filter__text">Produkte pro Seite:&nbsp;&nbsp;</span>
   <button class="collection-filter__button cart__form-quantity-button">
     <span id="displayValue">{{ current_sort.name }}</span>
-    <input class="cart__quantity-input collection-filter__input" type="text"
+    <input id="pagination-input" class="cart__quantity-input collection-filter__input" type="text"
     name="{{ current_sort.value }}"
     value="{{ current_sort.name }}">
     {{ 'sortMenuArrow.svg'| asset_url | img_tag : 'sortList Arrow', 'collection-filter__arrow' }}

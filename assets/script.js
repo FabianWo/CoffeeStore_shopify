@@ -1,5 +1,4 @@
 (() => {
-
   // VARIABLES
   // template helper
   const showTemplate = document.querySelector('.templatename');
@@ -14,7 +13,8 @@
   // collection page
   const sortCollectionChoices = [...document?.querySelectorAll('.collection-filter__list-item')]
   .map( el => el.getAttribute('value'));
-
+  const paginationInput = document?.querySelector('#pagination-input');
+  
   // cart page variables
   const cartItemQuantityButtons = document.querySelectorAll('.cart__form-quantity-button');
   const cartItemRemoveButtons = document.querySelectorAll('.cart__item-remove');
@@ -24,8 +24,15 @@
 
   // collection pages
 
-  const filterProductView = (sortType) => {
-    location.replace(`https://apptestfw.myshopify.com/collections/all?sort_by=${sortType}`);
+  const filterProductView = (sortValue) => {
+    const url = location.href;
+    if ( isNaN(parseInt(sortValue)) ) {
+      const baseUrl = url.split('sort_by=')[0];
+      location.assign(`${baseUrl}sort_by=${sortValue}`);
+    } else {
+      const newUrl = `${url}?view=${sortValue}`;
+      location.assign(newUrl);
+    }
   };
 
   // product page
@@ -150,11 +157,6 @@
   cartItemRemoveButtons?.forEach( (button) => {
     button.addEventListener('click', async (e) => {
       e.preventDefault();
-
-      const removeCartItem = await fetch(button.getAttribute('href'), {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'}
-      });
       await updateCartItemData(button, 0);
       button.closest('div[class="cart__item-wrapper"]')
       .previousElementSibling.remove();
