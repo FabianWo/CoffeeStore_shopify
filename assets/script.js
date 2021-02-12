@@ -30,7 +30,7 @@
       const baseUrl = url.split('sort_by=')[0];
       location.assign(`${baseUrl}sort_by=${sortValue}`);
     } else {
-      const newUrl = `${url}?view=${sortValue}`;
+      const newUrl = `${url.split('?view=')[0]}?view=${sortValue}`;
       location.assign(newUrl);
     }
   };
