@@ -59,7 +59,7 @@
 
           </button>
           
-          <a value="{{ item.variant_id }}" class="cart__item-remove" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">Löschen</a>
+          <a data-line-item-key="{{ forloop.index0 }}" value="{{ item.variant_id }}" class="cart__item-remove" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">Löschen</a>
         </div>
 
       </div>
@@ -114,7 +114,7 @@
   <h1 class="h2-heading-main cart__heading">Einkaufswagen</h1>
   <div class="cart__content box-lightshadow ">
     <span class="regular-text">
-      Einkaufswagen ist leer. <a class="h2-heading-secondary" href="/products">Zu allen Produkten</a>
+      Einkaufswagen ist leer. <a class="h3-heading-secondary" href="/products">Zu allen Produkten</a>
     </span>
   </div>
 

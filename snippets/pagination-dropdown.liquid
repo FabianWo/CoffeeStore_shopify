@@ -6,7 +6,7 @@
   {% endfor %}
 {% endif %}
 
-{% if collection.default_sort_by and collection.sort_by == false  %}
+{% if collection.default_sort_by %}
   {% for option in collection.sort_options %}
     {% if option.value == collection.default_sort_by %}
       {% assign current_sort = option %}
@@ -15,7 +15,7 @@
 {% endif %}
 
 <div class="collection-filter">
-  <span class="collection-filter__text">Sortieren nach:&nbsp;&nbsp;</span>
+  <span class="collection-filter__text">Produkte pro Seite:&nbsp;&nbsp;</span>
   <button class="collection-filter__button cart__form-quantity-button">
     <span id="displayValue">{{ current_sort.name }}</span>
     <input class="cart__quantity-input collection-filter__input" type="text"

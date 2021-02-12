@@ -5,6 +5,7 @@
   <div class="collection__breadcrumb-and-sort">
     {% render 'breadcrumb' %}
     <div class="collection__filters">
+      {% render 'pagination-dropdown' %}
       {% render 'collection-filter' %}
       
     </div>
@@ -12,7 +13,12 @@
   
   <div class="collection__products">
     
-    {% paginate collection.products by 15 %}
+    {% paginate collection.products by 2 %}
+    {% assign pag_parts = paginate.parts %}
+    {% assign pag_previous = paginate.previous %}
+    {% assign pag_next = paginate.next %}
+    
+
     {% if collection.products %}
       
       {% for product in collection.products %}
@@ -46,25 +52,27 @@
         </div>
         
       {% endfor %}
-
-    {% else %}
+      
+      
+      {% else %}
       <p>no matches</p>
-
-      {% if paginate.pages > 1 %}
-        {{ paginate | default_pagination }}
       {% endif %}
-
-    {% endif %}
-  
-    {% endpaginate %}
-
-  </div>
-
+      
+      
+      {% endpaginate %}
+      
+  </div>  
 </div>
 
+<div class="pagination-navigation box-lightshadow">
+  <a class="text-black pagination__link" href="{{ pag_previous.url }}" title=""><</a>
+  {% for part in pag_parts %}
+  <a class="text-black pagination__link" href="{{ part.url }}" title="">{{ part.title }}</a>
+  {% endfor %}
+  <a class="text-black pagination__link" href="{{ pag_next.url }}" title="">></a>
+</div>
 
 {% schema %}
-
 {
   "name": "collection-template",
   "class": "collection-template main__section",

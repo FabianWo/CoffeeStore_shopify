@@ -19,24 +19,22 @@
   const cartItemQuantityButtons = document.querySelectorAll('.cart__form-quantity-button');
   const cartItemRemoveButtons = document.querySelectorAll('.cart__item-remove');
   const cartItemPrices = [...document?.querySelectorAll('#itemPrice')];
-  
-  console.log(cartItemQuantityButtons);
 
   // FUNCTIONS
 
   // collection pages
 
-  const filterProductView = () => {
-    
+  const filterProductView = (sortType) => {
+    location.replace(`https://apptestfw.myshopify.com/collections/all?sort_by=${sortType}`);
   };
 
   // product page
   const setChosenProductOptions = () => {
     let newchosenProductOptions = [];
+
     productFormInputs.forEach( (input) => {
       input.checked ? newchosenProductOptions.push(input.getAttribute('value')) : null;
     });
-
     chosenProductOptions = newchosenProductOptions;
     selectProductVariant();
   };
@@ -52,7 +50,6 @@
         break;
       }
     }
-
     return variantIsMatching;
   };
 
@@ -75,27 +72,30 @@
     const input = button.querySelector('input');
     const displayElement = button.querySelector('#displayValue');
 
-    if ( targetElement.tagName === 'LI' && newValue > 0 && newValue < 10 ) {
-      if ( input.getAttribute('type') === 'number' ) {
-        input.value = newValue;
-        displayElement.innerHTML = `${newValue}`;
-        updateCartItemData(button, newValue);
-        button.blur();
-      } 
-    } else if ( targetElement.tagName === 'LI' && input.getAttribute('type') === 'text' 
+    if ( targetElement.tagName === 'LI' && newValue > 0 && newValue < 10 && input.getAttribute('type') === 'number') {
+      input.value = newValue;
+      displayElement.innerHTML = `${newValue}`;
+      updateCartItemData(button, newValue);
+      button.blur();
+    }
+
+    else if ( targetElement.tagName === 'LI' && input.getAttribute('type') === 'text' 
     && sortCollectionChoices.includes(newValue) ) {
       input.value = newValue;
       displayElement.innerHTML = newValue;
+      filterProductView(targetElement.getAttribute('name'));
       button.blur();
     }
+
   };
 
   const updateCartItemData = async (item, quantity) => {
     const lineItemKey = item.dataset.lineItemKey;
     if ( !lineItemKey ) { return };
+
     const variantId = parseInt(item.getAttribute('value'));
     const newVariantQuantity = quantity;
-    const data = {
+    const newData = {
       updates: {
         [variantId]: newVariantQuantity,
       }
@@ -106,22 +106,23 @@
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(newData)
     });
     const result = await updateData.json();
 
     const newCartTotal = await result.total_price;
-    updateCartTotal(newCartTotal);
     const newCartItemData = await result.items[lineItemKey];
+    updateCartTotal(newCartTotal);
     updateCartItemPrice(lineItemKey, newCartItemData);
-
   };
 
   const updateCartItemPrice = (index, newCartItemData) => {
-    const newPrice = (newCartItemData.line_price / 100)
-      .toString()
-      .replace('.', ',');
-    cartItemPrices[index].innerHTML =  newPrice;
+    if ( newCartItemData ) {
+      const newPrice = (newCartItemData.line_price / 100)
+        .toString()
+        .replace('.', ',');
+      cartItemPrices[index].innerHTML =  newPrice;
+    }
   };
 
   const updateCartTotal = (newCartTotal) => {
@@ -147,9 +148,14 @@
   });
 
   cartItemRemoveButtons?.forEach( (button) => {
-    button.addEventListener('click', (e) => {
+    button.addEventListener('click', async (e) => {
       e.preventDefault();
-      updateCartItemData(button, 0);
+
+      const removeCartItem = await fetch(button.getAttribute('href'), {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'}
+      });
+      await updateCartItemData(button, 0);
       button.closest('div[class="cart__item-wrapper"]')
       .previousElementSibling.remove();
       button.closest('div[class="cart__item-wrapper"]').remove();
