@@ -25,13 +25,41 @@
   // collection pages
 
   const filterProductView = (sortValue) => {
+    const baseUrl = location.href.split('?')[0];
     const url = location.href;
-    if ( isNaN(parseInt(sortValue)) ) {
-      const baseUrl = url.split('sort_by=')[0];
-      location.assign(`${baseUrl}sort_by=${sortValue}`);
+
+    const viewNumber = url.includes('view=') ? url.match(/\view=[0-9]+/g)[0] : '';
+    console.log(viewNumber);
+    
+    const sortBy = url.includes('sort_by=') ? `sort_by=${url.split('sort_by=')[1]}` : '';
+    console.log(sortBy);
+
+    if ( sortBy && viewNumber) {
+      location.assign(`${baseUrl}?${sortBy}&${viewNumber}`);
+      
+    } else if ( viewNumber ) {
+      
     } else {
-      const newUrl = `${url.split('?view=')[0]}?view=${sortValue}`;
-      location.assign(newUrl);
+      location.assign(`${baseUrl}?${sortBy}&${viewNumber}`);
+    }
+    
+
+
+
+    if ( isNaN(parseInt(sortValue)) ) {
+      // location.assign(`${baseUrl}?sort_by=${sortValue}`);
+    } else {
+      // let newUrl;
+      // if ( !url.includes('sort_by=') ) {
+      //   newUrl = `${url.split('?view=')[0]}?view=${sortValue}`;
+      //   console.log(newUrl);
+      // } else {
+      //   const newUrlParts = url.split(/\?view=[0-9]+/g);
+      //   console.log(newUrlParts);
+      //   newUrl = `${newUrlParts[0]}${newUrlParts[1]}?view=${sortValue}`;
+      //   console.log(newUrl);
+      // }
+      // location.assign(newUrl);
     }
   };
 
