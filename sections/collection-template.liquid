@@ -1,7 +1,7 @@
 <h1 class="h2-heading-main page__heading">{{ collection.title }}</h1>
 
 <div class="box-lightshadow collection__wrapper">
-
+  
   <div class="collection__breadcrumb-and-sort">
     {% render 'breadcrumb' %}
     <div class="collection__filters">
@@ -13,10 +13,10 @@
   
   <div class="collection__products">
     
-    {% paginate collection.products by 2 %}
+    <!-- {% paginate collection.products by 250 %}
     {% assign pag_parts = paginate.parts %}
     {% assign pag_previous = paginate.previous %}
-    {% assign pag_next = paginate.next %}
+    {% assign pag_next = paginate.next %} -->
     
 
     {% if collection.products %}
@@ -59,17 +59,17 @@
       {% endif %}
       
       
-      {% endpaginate %}
+      <!-- {% endpaginate %} -->
       
   </div>  
 </div>
 
 <div class="pagination-navigation box-lightshadow">
-  <a class="text-black pagination__link" href="{{ pag_previous.url }}" title=""><</a>
+  <!-- <a class="text-black pagination__link" href="{{ pag_previous.url }}" title=""><</a>
   {% for part in pag_parts %}
   <a class="text-black pagination__link" href="{{ part.url }}" title="">{{ part.title }}</a>
   {% endfor %}
-  <a class="text-black pagination__link" href="{{ pag_next.url }}" title="">></a>
+  <a class="text-black pagination__link" href="{{ pag_next.url }}" title="">></a> -->
 </div>
 
 {% schema %}

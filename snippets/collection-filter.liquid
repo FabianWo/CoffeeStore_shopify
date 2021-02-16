@@ -1,9 +1,24 @@
-{% assign paginate_options = '5,10,15,25,50' | split: ',' %}
+{% if collection.default_sort_by %}
+  {% for option in collection.sort_options %}
+    {% if option.value == collection.default_sort_by %}
+      {% assign current_sort = option %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if collection.sort_by %}
+  {% for option in collection.sort_options %}
+    {% if option.value == collection.sort_by %}
+      {% assign current_sort = option %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
 
 <div class="collection-filter">
-  <span class="collection-filter__text">Sortieren nach:&nbsp;&nbsp;</span>
+  <span class="collection-filter__text">Sortieren nach&nbsp;&nbsp;</span>
   <button class="collection-filter__button cart__form-quantity-button">
-    <span id="displayValue">10</span>
+    <span id="displayValue">{{ current_sort.name }}</span>
     <input class="cart__quantity-input collection-filter__input" type="text"
     name="{{ current_sort.value }}"
     value="{{ current_sort.name }}">
@@ -11,9 +26,9 @@
 
     <ul class="cart__quantity-list box-lightshadow collection-filter__list">
 
-      {% for option in paginate_options %}
-        <li value="{{ option }}" name="{{ option }}" class="cart__quantity-list-item collection-filter__list-item">
-          {{ option }}
+      {% for option in collection.sort_options %}
+        <li value="{{ option.name }}" name="{{ option.value }}" class="cart__quantity-list-item collection-filter__list-item">
+          {{ option.name }}
         </li>
       {% endfor %}
 

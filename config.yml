@@ -6,3 +6,4 @@ development:
   - node_modules
   - config/settings_data.json
   - pictures
+  - product-scvs-master

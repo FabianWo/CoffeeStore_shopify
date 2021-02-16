@@ -1,5 +1,7 @@
 (() => {
-  // VARIABLES
+  // ----- VARIABLES -----
+  // general
+
   // template helper
   const showTemplate = document.querySelector('.templatename');
 
@@ -14,53 +16,117 @@
   const sortCollectionChoices = [...document?.querySelectorAll('.collection-filter__list-item')]
   .map( el => el.getAttribute('value'));
   const paginationInput = document?.querySelector('#pagination-input');
+  const allDisplayedProducts = [...document?.querySelectorAll('.collection__product-card')];
+  const paginationNavigation = document?.querySelector('.pagination-navigation');
   
   // cart page variables
   const cartItemQuantityButtons = document.querySelectorAll('.cart__form-quantity-button');
   const cartItemRemoveButtons = document.querySelectorAll('.cart__item-remove');
   const cartItemPrices = [...document?.querySelectorAll('#itemPrice')];
 
-  // FUNCTIONS
+  // ----- FUNCTIONS -----
 
   // collection pages
 
-  const filterProductView = (sortValue) => {
+  // initialite pagination on collection pages
+  const paginateOnPageLoad = () => {
+    const url = location.href;
+    const pageNumber = url.includes('viewPage=') ?
+    parseInt( url.match(/viewPage=[0-9]+/g)[0].split('viewPage=')[1] ) :
+    0;
+    const paginateByIndex = url.includes('view=') ?
+    parseInt( url.match(/view=[0-9]+/g)[0].split('view=')[1] ) :
+    25;
+
+    if (paginateByIndex) {
+      document.querySelector('[name="displayPagination"]').innerHTML = paginateByIndex;
+      handleProductView(paginateByIndex, pageNumber);
+    }
+  };
+
+  // show/hide products depending on view, pagenumber variables from querystring
+  const handleProductView = (paginateByIndex, pageNumber) => {
+    const productParts = [];
+
+    for (let i = 0; i < allDisplayedProducts.length; i ) {
+      const part = allDisplayedProducts.slice(i, i + paginateByIndex);
+      productParts.push(part);
+      i = (i + paginateByIndex);
+    }
+
+    allDisplayedProducts.forEach( (el) => el.style.display = 'none');
+    productParts[pageNumber].forEach(el => el.style.display = 'flex');
+
+    if (productParts.length >=2) {
+      handlePaginationLinks(productParts);
+    }
+  };
+
+  // create pagination navigation menu at the bottom of collection page
+  const handlePaginationLinks = (productParts) => {
+    const relativeUrl = location.href.split('.com')[1];
+    const currentpage = relativeUrl.includes('viewPage') ?
+    parseInt(relativeUrl.match(/viewPage=[0-9]+/g)[0].split('=')[1]) :
+    0;
+
+    const getpageNumberUrl = (pageIndex) => {
+      let newUrl;
+      if (pageIndex < 1) pageIndex = 0;
+      if (relativeUrl.includes('?') && relativeUrl.includes('viewPage=')) {
+        newUrl = relativeUrl.replace(/viewPage=[0-9]+&?/g, `viewPage=${pageIndex}&`);
+      } else if (relativeUrl.includes('?')) {
+        newUrl = relativeUrl.replace(/\?/g, `?viewPage=${pageIndex}&`);
+      } else if (!relativeUrl.includes('?')) {
+        newUrl = relativeUrl.concat(`?viewPage=${pageIndex}&`);
+      }
+      return newUrl;
+    };
+
+    let navigationContents;
+    
+    navigationContents = 
+    `
+    <a class="text-black pagination__link" href="${getpageNumberUrl(currentpage-1)}" title=""><</a>
+    `;
+    
+    productParts.forEach( (part, i) => {
+      navigationContents += 
+      `
+      <a class="text-black pagination__link" href="${getpageNumberUrl(i)}" title="">${i+1}</a>
+      
+      `;
+    });
+    
+    navigationContents += 
+    `
+    <a class="text-black pagination__link" href="${getpageNumberUrl(currentpage+1)}" title="">></a>
+    `;
+
+    paginationNavigation.innerHTML = navigationContents;
+  };
+  
+  // get old querystrings and replace query that matches user input
+  const createCollectionUrl = (sortValue) => {
     const baseUrl = location.href.split('?')[0];
     const url = location.href;
-
-    const viewNumber = url.includes('view=') ? url.match(/\view=[0-9]+/g)[0] : '';
-    console.log(viewNumber);
     
-    const sortBy = url.includes('sort_by=') ? `sort_by=${url.split('sort_by=')[1]}` : '';
-    console.log(sortBy);
-
-    if ( sortBy && viewNumber) {
-      location.assign(`${baseUrl}?${sortBy}&${viewNumber}`);
-      
-    } else if ( viewNumber ) {
-      
-    } else {
-      location.assign(`${baseUrl}?${sortBy}&${viewNumber}`);
-    }
+    // get current querystrings
+    let viewNumber = url.includes('view=') ? url.match(/view=[0-9]+/g)[0] : '';
+    let sortBy = url.includes('sort_by=') ? url.match(/sort_by=[^&]*/g)[0] : '';
+    let pageNumber = url.includes('viewPage=') ? url.match(/viewPage=[0-9]+/g)[0] : '';
     
-
-
-
+    // assign new Value
     if ( isNaN(parseInt(sortValue)) ) {
-      // location.assign(`${baseUrl}?sort_by=${sortValue}`);
-    } else {
-      // let newUrl;
-      // if ( !url.includes('sort_by=') ) {
-      //   newUrl = `${url.split('?view=')[0]}?view=${sortValue}`;
-      //   console.log(newUrl);
-      // } else {
-      //   const newUrlParts = url.split(/\?view=[0-9]+/g);
-      //   console.log(newUrlParts);
-      //   newUrl = `${newUrlParts[0]}${newUrlParts[1]}?view=${sortValue}`;
-      //   console.log(newUrl);
-      // }
-      // location.assign(newUrl);
+      sortBy = `sort_by=${sortValue}`;
+    } else if ( parseInt(sortValue) ) {
+      viewNumber = `view=${sortValue}`;
     }
+    
+    // build new Url
+    let queries = [pageNumber, sortBy, viewNumber].filter(el => el.length > 0);
+    let newUrl = `${baseUrl}?${queries.join('&')}`;
+
+    location.assign(newUrl);
   };
 
   // product page
@@ -118,7 +184,7 @@
     && sortCollectionChoices.includes(newValue) ) {
       input.value = newValue;
       displayElement.innerHTML = newValue;
-      filterProductView(targetElement.getAttribute('name'));
+      createCollectionUrl(targetElement.getAttribute('name'));
       button.blur();
     }
 
@@ -142,8 +208,8 @@
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(newData)
-    });
-    const result = await updateData.json();
+    }).then(res => res.json());
+    const result = updateData;
 
     const newCartTotal = await result.total_price;
     const newCartItemData = await result.items[lineItemKey];
@@ -167,7 +233,7 @@
     document.querySelector('#cart-total').innerHTML = newTotal;
   };
 
-  // LISTENERS
+  // ----- LISTENERS -----
 
   // product page
   productFormInputs?.forEach( (input) => {
@@ -201,5 +267,11 @@
       showTemplate.style.display = 'block';
     }
   });
+
+
+  // ----- IMMEDIATE FUNCTION CALLS -----
+  if ( paginationInput) {
+    paginateOnPageLoad();
+  } 
 
 })();
