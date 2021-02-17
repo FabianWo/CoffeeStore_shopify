@@ -1,3 +1,14 @@
+<h1 class="h2-heading-main page__heading">{{ collection.title }}</h1>
+
+<div class="box-lightshadow collection__wrapper">
+  
+  <div class="collection__breadcrumb-and-sort">
+    {% render 'breadcrumb' %}
+    <div class="collection__filters">
+      {% render 'pagination-dropdown' %}
+    </div>
+  </div>
+
 {% paginate search.results by 10 %}
   <form action="/search" method="get" role="search">
     <input type="search" name="q" value="{{ search.terms | escape }}">
@@ -6,69 +17,63 @@
 
   {% if search.performed %}
 
-  <div class="collection__products">    
+    <div class="collection__products">    
 
-    {% if collection.products %}
+      {% if search.results_count > 0 %}
+        
+      {% for item in search.results %}
       
-    {% for product in collection.products %}
-    
-      <div class="product-card collection__product-card">
-        <a href="{{ product.url | within: collection }}">
-          {{ product.images[0] | img_url: '600x' | img_tag: '', 'product-card__image' }}
-        </a>
-        
-        <span class="h3-heading-secondary product-card__text">
-          <a class="text-black" href="{{ product.url | within: collection }}">{{ product.title }}</a>
-        </span>
-        
-        <span class="product-card__price">
-          {% if product.has_only_default_variant %}- {% else %}<p class="regular-text">ab&nbsp;</p>{% endif %}
+        {% if item.object_type == 'product' %}
+      
+        <div class="product-card collection__product-card">
+          <a href="{{ item.url | within: collection }}">
+            {{ item.images[0] | img_url: '600x' | img_tag: '', 'product-card__image' }}
+          </a>
           
-          {% if product.available %}{{ product.price | money_without_currency }} €
-          {% else %}ausverkauft{% endif %}
-        </span>
-        
-        <!-- <span class="product-card__compare-price"> -->
-        {% if product.variants.first.unit_price %}
-        
-        <span class="product-card__per-kg-price">
-          ( {{ product.variants.first.unit_price | money_without_currency }} € / kg )
-        </span>
+          <span class="h3-heading-secondary product-card__text">
+            <a class="text-black" href="{{ item.url | within: collection }}">{{ item.title }}</a>
+          </span>
+          
+          <span class="product-card__price">
+            {% if item.has_only_default_variant %}- {% else %}<p class="regular-text">ab&nbsp;</p>{% endif %}
+            
+            {% if item.available %}{{ item.price | money_without_currency }} €
+            {% else %}ausverkauft{% endif %}
+          </span>
+          
+          <!-- <span class="product-card__compare-price"> -->
+          {% if item.variants.first.unit_price %}
+          
+          <span class="product-card__per-kg-price">
+            ( {{ item.variants.first.unit_price | money_without_currency }} € / kg )
+          </span>
+          {% endif %}
+
+          <a class="product-card__link" href="{{ item.url }}">
+            <button class="button-black button-small product-card__button">zur Produktseite</button>
+          </a>
+
+        </div>
         {% endif %}
-
-        <a class="product-card__link" href="{{ product.url }}">
-          <button class="button-black button-small product-card__button">zur Produktseite</button>
-        </a>
-
-      </div>
-      
-    {% endfor %}
-    
-    
-    {% else %}
-      No search results. Try again !
-    {% endif %}
-      
-  </div>
-  
-    {% for item in search.results %}
-      {% if item.object_type == 'product' %}
         
-      {% if item.featured_image %}
-        <a href="{{ item.url | within: collection }}" title="{{ item.title | escape }}">
-          {{ item.featured_image.src | img_url: 'medium' | img_tag: item.featured_image.alt }}
-        </a>
+      {% endfor %}
+      
+      {% else %}
+        <h3 class="h3-heading-secondary">No search results. Try again !</h3>
       {% endif %}
-
-      <h2 class="h2-heading-secondary"><a class="text-black" href="{{item.url}}">{{item.title}}</a></h2>
-      <p>{{ item.content | strip_html | truncatewords: 50 }}</p>
-      {% endif %}
-
-    {% endfor %}
-
-  {% else %}
-    no results
+      
+    </div>
+    
   {% endif %}
-
-  {% if paginate.pages > 1 %}{{ paginate | default_pagination }}{% endif %}
 {% endpaginate %}
+</div>
+
+<div class="pagination-navigation box-lightshadow"></div>
+
+{% schema %}
+{
+  "name": "search-template",
+  "class": "collection-template main__section",
+  "tag": "div"
+}
+{% endschema %}
