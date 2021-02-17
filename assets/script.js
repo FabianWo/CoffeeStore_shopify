@@ -59,6 +59,8 @@
 
     if (productParts.length >=2) {
       handlePaginationLinks(productParts);
+    } else {
+      document.querySelector('.pagination-navigation').remove();
     }
   };
 
@@ -92,17 +94,21 @@
     productParts.forEach( (part, i) => {
       navigationContents += 
       `
-      <a class="text-black pagination__link" href="${getpageNumberUrl(i)}" title="">${i+1}</a>
+      <a value="page${i}" class="text-black pagination__link" href="${getpageNumberUrl(i)}" title="">${i+1}</a>
       
       `;
     });
     
     navigationContents += 
     `
-    <a class="text-black pagination__link" href="${getpageNumberUrl(currentpage+1)}" title="">></a>
+    <a class="text-black pagination__link" href="
+    ${getpageNumberUrl(
+      (currentpage >= (productParts.length-1) ? currentpage : currentpage +1 )
+    )}" title="">></a>
     `;
 
     paginationNavigation.innerHTML = navigationContents;
+    document.querySelector(`a[value=page${currentpage}]`).setAttribute('selected', '');
   };
   
   // get old querystrings and replace query that matches user input

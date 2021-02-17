@@ -1,16 +1,11 @@
-<h1 class="h2-heading-main page__heading">{{ collection.title }}</h1>
+{% paginate search.results by 10 %}
+  <form action="/search" method="get" role="search">
+    <input type="search" name="q" value="{{ search.terms | escape }}">
+    <button type="submit">search</button>
+  </form>
 
-<div class="box-lightshadow collection__wrapper">
-  
-  <div class="collection__breadcrumb-and-sort">
-    {% render 'breadcrumb' %}
-    <div class="collection__filters">
-      {% render 'pagination-dropdown' %}
-      {% render 'collection-filter' %}
-      
-    </div>
-  </div>
-  
+  {% if search.performed %}
+
   <div class="collection__products">    
 
     {% if collection.products %}
@@ -51,18 +46,29 @@
     
     
     {% else %}
-    <p>no matches</p>
+      No search results. Try again !
     {% endif %}
       
-  </div>  
-</div>
+  </div>
+  
+    {% for item in search.results %}
+      {% if item.object_type == 'product' %}
+        
+      {% if item.featured_image %}
+        <a href="{{ item.url | within: collection }}" title="{{ item.title | escape }}">
+          {{ item.featured_image.src | img_url: 'medium' | img_tag: item.featured_image.alt }}
+        </a>
+      {% endif %}
 
-<div class="pagination-navigation box-lightshadow"></div>
+      <h2 class="h2-heading-secondary"><a class="text-black" href="{{item.url}}">{{item.title}}</a></h2>
+      <p>{{ item.content | strip_html | truncatewords: 50 }}</p>
+      {% endif %}
 
-{% schema %}
-{
-  "name": "collection-template",
-  "class": "collection-template main__section",
-  "tag": "div"
-}
-{% endschema %}
+    {% endfor %}
+
+  {% else %}
+    no results
+  {% endif %}
+
+  {% if paginate.pages > 1 %}{{ paginate | default_pagination }}{% endif %}
+{% endpaginate %}

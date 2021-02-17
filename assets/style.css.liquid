@@ -185,7 +185,7 @@ body {
 
 .h1-heading-secondary {
   font-size: clamp(28px, 6vw, 2.25rem);;
-  letter-spacing: -.065em;
+  letter-spacing: -.055em;
   font-weight: 500;
   margin: 0;
   
@@ -313,6 +313,7 @@ body {
   position: absolute;
   z-index: -10;
   pointer-events: none;
+  width: 0;
 }
 
 .cart__quantity-input:hover {
@@ -327,7 +328,7 @@ body {
   left: -1px;
   display: flex;
   flex-direction: column;
-  /* width: 102.2%; */
+  width: 102.2%;
   border: 1px solid rgb(66, 66, 66);
   border-radius: 4px;
   background-color: white;
@@ -338,7 +339,7 @@ body {
 }
 
 .cart__quantity-list-item {
-  padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.2rem;
 }
 
 .cart__quantity-list-item:hover {
@@ -351,10 +352,12 @@ body {
 
 .pagination-navigation {
   display: flex;
+  flex-wrap: wrap;
   align-self: center;
   gap: 0.2rem;
   padding: 0.5rem 2.5rem;
   border-radius: 0px;
+  max-width: 90%;
 }
 
 .pagination__link {
@@ -362,15 +365,15 @@ body {
   letter-spacing: -.065em;
   color: rgb(0, 0, 0);
   padding: 0.325rem 0.45rem;
-  transition: all 0.1;
+  transition: all 0.1s;
   
   font-family: {{ settings.font-primary.family | append: '500'}};
 }
 
-.pagination__link:hover {
-  color: rgb(124, 124, 124);
+.pagination__link:hover,
+.pagination__link[selected] {
+  color: rgb(155, 155, 155);
 }
-
 
 /* footer */
 
@@ -446,7 +449,7 @@ body {
 }
 
 .nav__link:hover {
-  color: rgb(209, 209, 209);
+  color: rgb(175, 175, 175);
 }
 
 .nav__searchbar {
@@ -1262,7 +1265,7 @@ margin-top: auto;
 
 .breadcrumb {
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   column-gap: 0.25rem;
   row-gap: 0.25rem;
   letter-spacing: -0.055em;
@@ -1298,6 +1301,7 @@ margin-top: auto;
 
 .collection__filters {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
 }
 
@@ -1330,18 +1334,11 @@ margin-top: auto;
   font-family: {{ settings.font-primary.family | append: '600'}}
 }
 
-.collection-filter__input {
-  /* width: auto; */
-  letter-spacing: -0.055em;
-}
-
 .collection-filter__list {
   border: 1px solid rgb(88, 88, 88);
 }
 
 .collection-filter__list-item {
-  padding: 0.35rem 0.5rem;
-  text-align: start;
   font-family: {{ settings.font-primary.family | append: '500'}}
 }
 
@@ -1373,8 +1370,9 @@ margin-top: auto;
 
 .collection__breadcrumb-and-sort {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 1.5rem;
 }
 
 .collection__products {

@@ -1,0 +1,79 @@
+<!-- Alle collections -->
+
+<h1 class="h2-heading-main page__heading">Collections</h1>
+
+<div class="box-lightshadow collection__wrapper">
+  
+  <div class="collection__breadcrumb-and-sort">
+    {% render 'breadcrumb' %}
+    <div class="collection__filters">
+      {% render 'pagination-dropdown' %}
+    </div>
+  </div>
+  
+  <div class="collection__products">    
+
+    {% if collections %}
+      
+    {% for collection in collections %}
+    {% unless collection.handle == 'featured-products' %}
+    {% assign cheapest_option = collection.products | sort: 'price' %}
+    
+      <div class="product-card collection__product-card">
+        <a href="{{ collection.url }}">
+          {{ collection.image | img_url: '600x' | img_tag: '', 'product-card__image' }}
+        </a>
+        
+        <span class="h2-heading-secondary product-card__text">
+          <a class="text-black" href="{{ collection.url }}">{{ collection.title }}</a>
+        </span>
+        
+        <span class="product-card__price">
+          {% if product.has_only_default_variant %}- {% else %}<p class="regular-text">ab&nbsp;</p>{% endif %}
+          {{ cheapest_option[0].price | money_without_currency }} €
+        </span>
+
+        <a class="product-card__link" href="{{ product.url }}">
+          <button class="button-black button-small product-card__button">zur Kollektion</button>
+        </a>
+
+      </div>
+
+    {% endunless %}
+    {% endfor %}
+    
+    
+    {% else %}
+    <p>no matches</p>
+    {% endif %}
+    
+  </div>  
+</div>
+
+<div class="pagination-navigation box-lightshadow"></div>
+
+{% schema %}
+{
+  "name": "collection-template",
+  "class": "collection-template main__section",
+  "tag": "div"
+}
+{% endschema %}
+
+<!-- {% for collection in collections %}
+  {% unless collection.handle == 'frontpage' %}
+    {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
+    <a href="{{ collection.url }}">More {{ collection_title }} &rsaquo;</a>
+    {% for product in collection.products limit:5 %}
+      {% assign grid_item_width = 'large--one-fifth medium--one-half' %}
+      <div>
+        <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+        {{ product.price | money }}
+        {% unless product.available %}<br><strong>sold out</strong>{% endunless %}
+        <a href="{{ product.url | within: collection }}">
+          <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+        </a>
+      </div>
+    {% endfor %}
+  {% endunless %}
+{% endfor %} -->

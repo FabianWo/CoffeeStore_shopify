@@ -1,7 +1,9 @@
 {% assign paginate_options = '5,10,15,25,50' | split: ',' %}
 
 <div class="collection-filter">
-  <span class="collection-filter__text">Produkte pro Seite:&nbsp;&nbsp;</span>
+  <span class="collection-filter__text">
+    {% if template == 'list-collections' %}Kollektionen pro Seite:{% else %}Produkte pro Seite:{% endif %}&nbsp;&nbsp;
+  </span>
   <button class="collection-filter__button cart__form-quantity-button">
     <span name="displayPagination" id="displayValue">25</span>
     <input id="pagination-input" class="cart__quantity-input collection-filter__input" type="text"
