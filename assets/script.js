@@ -7,6 +7,8 @@
 
   // navigation
   const navSearch = document.querySelector('.nav__searchbar');
+  const mobileButton = document.querySelector('.nav-mobile-button');
+  const bottomNavigation = document.querySelector('.nav-container-bottom');
 
   // product page variables
   const productFormInputs = [...document.querySelectorAll('input[type="radio"]')];
@@ -40,7 +42,6 @@
       return;
     }
     
-    console.log('durch');
     const pageNumber = url.includes('viewPage=') ?
     parseInt( url.match(/viewPage=[0-9]+/g)[0].split('viewPage=')[1] ) :
     0;
@@ -209,7 +210,6 @@
       createCollectionUrl(targetElement.getAttribute('name'));
       button.blur();
     }
-
   };
 
   const updateCartItemData = async (item, quantity) => {
@@ -264,6 +264,16 @@
     location.assign(`${location.origin}/search?q=${searchValue}`);
   });
 
+  mobileButton.addEventListener('click', (e) => {
+    const translateDirection = e.clientX;
+    console.log(translateDirection);
+    if (translateDirection > 150) {
+      bottomNavigation.style.transform = 'translateX(0%)';
+    } else {
+      bottomNavigation.style.transform = 'translateX(80%)';
+    }
+  });
+
   // product page
   productFormInputs?.forEach( (input) => {
     input.addEventListener('input', () => setChosenProductOptions());
@@ -301,6 +311,6 @@
   // ----- IMMEDIATE FUNCTION CALLS -----
   if ( paginationInput) {
     paginateOnPageLoad();
-  } 
+  }
 
 })();

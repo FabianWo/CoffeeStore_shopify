@@ -1,17 +1,17 @@
-<div class="nav-container">
+<nav class="nav-container">
 
   <div class="logo-container">
     <a href="/">{{ 'LOGO-espressocup.svg'| asset_url | img_tag : 'espresso-cup logo', 'logo' }}</a>
   </div>  
-
-  
   
   <div class="nav__list-side">
     <form class="nav__searchbar" action="/search" method="get" role="search">
+      <div class="search__link">{{ 'search-icon-dark.svg' | asset_url | img_tag : '', 'nav__icon nav__search-icon' }}</div>
       <input type="text" class="searchbar__input" placeholder="Suchen">
-      <button class="search__link">{{ 'search-icon.svg' | asset_url | img_tag : '', 'nav__icon nav__search-icon' }}</button>
     </form>
-    <span class="nav__list-item"> <a class="nav__link" href="/login">login</a></span>
+    <span>
+      <a href="/login">{{ 'user-icon.svg' | asset_url | img_tag : '', 'nav__icon nav__user-icon' }}</a>
+    </span>
     <span>
       <a href="/cart">{{ 'cart-icon.svg' | asset_url | img_tag : '', 'nav__icon nav__cart-icon' }}</a>
     </span>
@@ -34,11 +34,44 @@
     
   </div>
 
-</div>
+</nav>
+<div class="mobile-nav__divider"></div>
 
-<div class="nav-container">
+<nav class="nav-container-bottom">
+  <button class="nav-mobile-button"></button>
+  <div class="mobile-nav">
+    <ul class="mobile__nav-list">
 
-  <ul class="nav__list">
+      {% for link in linklists.main-menu.links %}
+        {% assign child_list_handle = link.title | handleize %}
+  
+        {% if linklists[child_list_handle].links != blank %}
+
+          <li class="mobile-nav__item">
+            <a class="nav__link mobile__nav-link" href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+          <div class="mobile-nav__divider"></div>
+          
+          {% for childlink in linklists[child_list_handle].links %}
+            <li class="mobile-nav__item">
+              <a class="nav__link mobile__nav-link" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+            </li>
+          {% endfor %}]
+  
+          {% else %}
+
+          <li class="mobile-nav__item">
+            <a class="nav__link mobile__nav-link" href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+          <div class="mobile-nav__divider"></div>
+
+        {% endif %}
+
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- <ul class="nav__list">
 
     {% for link in linklists.main-menu.links %}
       {% assign child_list_handle = link.title | handleize %}
@@ -62,9 +95,9 @@
           
       {% endif %}
     {% endfor %}
-  </ul>
+  </ul> -->
 
-</div>
+</nav>
 
 
 

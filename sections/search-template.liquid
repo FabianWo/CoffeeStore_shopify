@@ -10,7 +10,7 @@
 
 {% paginate search.results by 10 %}
   <form class="article__form-info search__form" action="/search" method="get" role="search">
-    <input class="article__form-input" placeholder="search for something.." type="search" name="q" value="{{ search.terms | escape }}">
+    <input class="article__form-input search__input" placeholder="search for something.." type="search" name="q" value="{{ search.terms | escape }}">
     <button class="button-red button-small search-button" type="submit">Suchen !</button>
   </form>
 
