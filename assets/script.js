@@ -35,11 +35,12 @@
   const paginateOnPageLoad = () => {
     const url = location.href;
     if ( !paginationNavigation ||
-      (url.includes('search') && allDisplayedProducts !== []) ) {
+      ( url.includes('search') && allDisplayedProducts.length === 0) ) {
       paginationNavigation.remove();
       return;
     }
-
+    
+    console.log('durch');
     const pageNumber = url.includes('viewPage=') ?
     parseInt( url.match(/viewPage=[0-9]+/g)[0].split('viewPage=')[1] ) :
     0;
@@ -63,7 +64,6 @@
       i = (i + paginateByIndex);
     }
 
-    console.log(productParts[pageNumber])
     if ( !productParts[pageNumber] ) {
       location.assign(location.href.replace(/viewPage=[0-9]+/g, 'viewPage=0'));
       return;
@@ -135,6 +135,7 @@
     let viewNumber = url.includes('view=') ? url.match(/view=[0-9]+/g)[0] : '';
     let sortBy = url.includes('sort_by=') ? url.match(/sort_by=[^&]*/g)[0] : '';
     let pageNumber = url.includes('viewPage=') ? url.match(/viewPage=[0-9]+/g)[0] : '';
+    let searchValue = url.includes('q=') ? url.match(/q=[^&]*/g)[0] : '';
     
     // assign new Value
     if ( isNaN(parseInt(sortValue)) ) {
@@ -144,7 +145,7 @@
     }
     
     // build new Url
-    let queries = [pageNumber, sortBy, viewNumber].filter(el => el.length > 0);
+    let queries = [searchValue, pageNumber, sortBy, viewNumber].filter(el => el.length > 0);
     let newUrl = `${baseUrl}?${queries.join('&')}`;
 
     location.assign(newUrl);

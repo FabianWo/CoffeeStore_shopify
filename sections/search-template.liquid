@@ -1,18 +1,17 @@
-<h1 class="h2-heading-main page__heading">{{ collection.title }}</h1>
+<h1 class="h2-heading-main page__heading">Suche</h1>
 
-<div class="box-lightshadow collection__wrapper">
+<div class="box-lightshadow collection__wrapper search__wrapper">
   
   <div class="collection__breadcrumb-and-sort">
-    {% render 'breadcrumb' %}
     <div class="collection__filters">
       {% render 'pagination-dropdown' %}
     </div>
   </div>
 
 {% paginate search.results by 10 %}
-  <form action="/search" method="get" role="search">
-    <input type="search" name="q" value="{{ search.terms | escape }}">
-    <button type="submit">search</button>
+  <form class="article__form-info search__form" action="/search" method="get" role="search">
+    <input class="article__form-input" placeholder="search for something.." type="search" name="q" value="{{ search.terms | escape }}">
+    <button class="button-red button-small search-button" type="submit">Suchen !</button>
   </form>
 
   {% if search.performed %}
@@ -73,7 +72,7 @@
 {% schema %}
 {
   "name": "search-template",
-  "class": "collection-template main__section",
+  "class": "collection-template main__section search-template",
   "tag": "div"
 }
 {% endschema %}
