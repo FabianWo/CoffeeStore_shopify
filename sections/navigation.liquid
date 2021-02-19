@@ -38,7 +38,13 @@
 <div class="mobile-nav__divider"></div>
 
 <nav class="nav-container-bottom">
-  <button class="nav-mobile-button"></button>
+  <button class="nav-mobile-button">
+    <div class="menu-button-stripes">
+      <div class="nav-mobile-button-stripe"></div>
+      <div class="nav-mobile-button-stripe"></div>
+    </div>
+    <span class="nav__list-item nav-mobile-button__text">Menü</span>
+  </button>
   <div class="mobile-nav">
     <ul class="mobile__nav-list">
 
@@ -71,7 +77,7 @@
     </ul>
   </div>
 
-  <!-- <ul class="nav__list">
+  <ul class="nav__list">
 
     {% for link in linklists.main-menu.links %}
       {% assign child_list_handle = link.title | handleize %}
@@ -95,7 +101,7 @@
           
       {% endif %}
     {% endfor %}
-  </ul> -->
+  </ul>
 
 </nav>
 

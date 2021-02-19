@@ -269,8 +269,10 @@
     console.log(translateDirection);
     if (translateDirection > 150) {
       bottomNavigation.style.transform = 'translateX(0%)';
+      mobileButton.removeAttribute('selected');
     } else {
-      bottomNavigation.style.transform = 'translateX(80%)';
+      bottomNavigation.style.transform = 'translateX(70%)';
+      mobileButton.setAttribute('selected', '');
     }
   });
 
@@ -298,7 +300,14 @@
   });
 
 
-  // template helper
+  // template helper / window
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 800) {
+      bottomNavigation.style.transform = 'translateX(0%)';
+      mobileButton.removeAttribute('selected');
+    }
+  });
+
   window.addEventListener('mousemove', (e) => {
     if (e.clientY < 1 && e.clientX < 1 && showTemplate.style.display === "block") {
       showTemplate.style.display = 'none';
