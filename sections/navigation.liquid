@@ -82,17 +82,41 @@
     {% for link in linklists.main-menu.links %}
       {% assign child_list_handle = link.title | handleize %}
 
-      {% if linklists[child_list_handle].links != blank %}
+        {% if linklists[child_list_handle].links != blank %}
         <li class="nav__list-item">
           <a class="nav__link" href="{{ link.url }}">{{ link.title }}</a>
-        </li>
-        
-        {% for childlink in linklists[child_list_handle].links %}
 
-          <li class="nav__list-item">
-            <a class="nav__link" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
-          </li>
-        {% endfor %}]
+          <div class="child-navigation">
+            <ul class="child-navigation__lists">
+    
+            {% for childlink in linklists[child_list_handle].links %}
+            <ul class="child-navigation__list">
+              <li>
+                <a class="child-nav__heading" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+              </li>
+
+              <!-- {% if childlink.object %} -->
+              {% for type in childlink.object.all_types %}
+              {% if forloop.index0 > 0 %}
+                
+              
+              <li class="child-nav__list-item">
+                <a class="child-nav__link" href="{{ type | url_for_type }}">
+                  {{ type }}</a>
+              </li>
+              {% endif %}
+
+              {% endfor %}
+              <!-- {% endif %} -->
+
+            </ul>
+            {% endfor %}
+  
+            </ul>
+          </div>
+
+        </li>
+      
 
         {% else %}
           <li class="nav__list-item">

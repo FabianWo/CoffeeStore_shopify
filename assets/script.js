@@ -65,10 +65,13 @@
       i = (i + paginateByIndex);
     }
 
-    if ( !productParts[pageNumber] ) {
+    if (productParts.length === 0) {
+      paginationNavigation.remove();
+      return;
+    } else if ( !productParts[pageNumber] ) {
       location.assign(location.href.replace(/viewPage=[0-9]+/g, 'viewPage=0'));
       return;
-    }
+    } 
 
     allDisplayedProducts.forEach( (el) => el.style.display = 'none');
     productParts[pageNumber].forEach(el => el.style.display = 'flex');
@@ -103,9 +106,9 @@
     let navigationContents;
     
     navigationContents = 
-    `
-    <a class="text-black pagination__link" href="${getpageNumberUrl(currentpage-1)}" title=""><</a>
-    `;
+    currentpage > 0 ?
+    `<a class="text-black pagination__link" href="${getpageNumberUrl(currentpage-1)}" title=""><</a>` :
+    '<span class="text-black pagination__link" style="pointer-events: none"><</span>';
     
     productParts.forEach( (part, i) => {
       navigationContents += 
@@ -116,12 +119,9 @@
     });
     
     navigationContents += 
-    `
-    <a class="text-black pagination__link" href="
-    ${getpageNumberUrl(
-      (currentpage >= (productParts.length-1) ? currentpage : currentpage +1 )
-    )}" title="">></a>
-    `;
+    currentpage < (productParts.length-1) ?
+    `<a class="text-black pagination__link" href="${getpageNumberUrl(currentpage)}" title="">></a>` :
+    '<span class="text-black pagination__link" style="pointer-events: none">></span>';
 
     paginationNavigation.innerHTML = navigationContents;
     document.querySelector(`a[value=page${currentpage}]`).setAttribute('selected', '');
@@ -130,6 +130,7 @@
   // get old querystrings and replace query that matches user input
   const createCollectionUrl = (sortValue) => {
     const baseUrl = location.href.split('?')[0];
+    console.log(baseUrl);
     const url = location.href;
     
     // get current querystrings
