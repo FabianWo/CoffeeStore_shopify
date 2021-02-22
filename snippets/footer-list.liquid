@@ -1,18 +1,16 @@
 <div class="footer__list-container">
   
-  <a 
-  class="footer__heading nav__link footer__heading-link"
-  href="{{ linklists[list_handle].url }}">
+  <span class="footer__heading">
     {{ linklists[list_handle].title | truncate: 30, ''}}
-  </a>
+  </span>
 
   <ul class="footer__list">
 
   {% for link in linklists[list_handle].links %}
   {% if forloop.index < 7 %}
   
-  <li class="nav__list-item footer__list-item">
-    <a class="nav__link footer__link" href="{{ link.url }}">
+  <li class="footer__list-item">
+    <a class="footer__link" href="{{ link.url }}">
       {{ link.title | truncate: 30, ''}}
     </a>
   </li>

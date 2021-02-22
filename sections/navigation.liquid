@@ -43,10 +43,10 @@
       <div class="nav-mobile-button-stripe"></div>
       <div class="nav-mobile-button-stripe"></div>
     </div>
-    <span class="nav__list-item nav-mobile-button__text">Menü</span>
+    <span class="nav-mobile-button__text">Menü</span>
   </button>
   <div class="mobile-nav">
-    <ul class="mobile__nav-list">
+    <ul class="mobile-nav__list">
 
       {% for link in linklists.main-menu.links %}
         {% assign child_list_handle = link.title | handleize %}
@@ -54,20 +54,24 @@
         {% if linklists[child_list_handle].links != blank %}
 
           <li class="mobile-nav__item">
-            <a class="nav__link mobile__nav-link" href="{{ link.url }}">{{ link.title }}</a>
+            <a class="nav__link mobile-nav__link" href="{{ link.url }}">{{ link.title }}</a>
           </li>
-          <div class="mobile-nav__divider"></div>
-          
-          {% for childlink in linklists[child_list_handle].links %}
-            <li class="mobile-nav__item">
-              <a class="nav__link mobile__nav-link" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+
+          <div class="mobile-nav__childlist">
+
+            {% for childlink in linklists[child_list_handle].links %}
+            <li class="mobile-nav__childitem">
+              <a class="nav__link mobile-nav__child-link" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
             </li>
-          {% endfor %}]
-  
+            {% endfor %}
+          </div>
+
+          <div class="mobile-nav__divider"></div>
+
           {% else %}
 
           <li class="mobile-nav__item">
-            <a class="nav__link mobile__nav-link" href="{{ link.url }}">{{ link.title }}</a>
+            <a class="nav__link mobile-nav__link" href="{{ link.url }}">{{ link.title }}</a>
           </li>
           <div class="mobile-nav__divider"></div>
 
