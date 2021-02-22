@@ -143,7 +143,24 @@ body {
 
 .nav__icon {
   display: block;
+  transition: all 0.3s;
+}
+
+.nav__icon:hover {
+  transform: translateY(-1px);
+}
+
+.nav__search-icon {
+  display: block;
+}
+
+.nav__user-icon {
+  width: 20px;
+}
+
+.nav__cart-icon {
   width: 26px;
+  height: 23px;
 }
 
 /* main */
@@ -437,13 +454,12 @@ body {
 }
 
 .nav__list-item {
-  padding: 1.25rem 0;
   text-align: center;
   transition: all 0.05s;
 }
 
 .nav__list-item:hover {
-  box-shadow: inset 0 -3px 0 0 white;
+  box-shadow: inset 0 -4px 0 0 white;
 }
 
 .nav__link {
@@ -451,6 +467,8 @@ body {
   font-size: 1.25rem;
   transition: color .3s;
   color: #ffffff;
+  padding: 1.25rem 0;
+  display: inline-block;
   
   letter-spacing: -.06em;
   font-family: {{ settings.font-primary.family | append: '400'}};
@@ -478,16 +496,43 @@ body {
   color: rgb(34, 34, 34);
 }
 
-.search__link {
+.searchbar__link {
   position: absolute;
   z-index: 10;
   background: #eeeeee;
 }
 
-.nav__search-icon {
+.searchbar__icon {
   padding: 3px 0;
   margin-left: 0.5rem;
   width: 20px;
+}
+
+.searchbar__preview-wrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+  max-height: 800px;
+  width: 320px;
+  top: 100%;
+  overflow-y: scroll;
+  gap: 0.2rem;
+}
+
+.searchbar__preview-element {
+  display: flex;
+  justify-content: baseline;
+}
+
+.searchbar__preview-heading {
+  font-size: 1.25rem;
+}
+
+.searchbar__preview-image {
+  width: 50px;
+  height: auto;
 }
 
 /* nested navigation block */
@@ -504,9 +549,10 @@ body {
   padding: 1rem;
   gap: 1rem;
   background-color: white;
-  border-top: 1px solid rgb(235, 235, 235);
   border-bottom: 1px solid rgb(235, 235, 235);
-  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.096);
+  box-shadow: 
+  0 6px 12px -6px rgba(114, 114, 114, 0.13),
+  inset 0px 27px 20px -20px rgb(114, 114, 114, 0.35);
 }
 
 .nav__list-item:hover .child-navigation {
@@ -531,7 +577,7 @@ body {
   font-weight: 600;
   padding: 0.4rem 0;
   margin-bottom: 0.3rem;
-  letter-spacing: -.055em;
+  letter-spacing: -.025em;
   transition: all 0.15s;
 }
 
@@ -553,8 +599,11 @@ body {
   color: rgb(77, 77, 77);
   font-size: 1rem;
   font-weight: 500;
-  letter-spacing: -.06em;
+  letter-spacing: -.05em;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .child-nav__link:hover {

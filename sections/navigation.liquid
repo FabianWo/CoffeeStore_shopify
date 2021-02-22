@@ -6,8 +6,9 @@
   
   <div class="nav__list-side">
     <form class="nav__searchbar" action="/search" method="get" role="search">
-      <div class="search__link">{{ 'search-icon-dark.svg' | asset_url | img_tag : '', 'nav__icon nav__search-icon' }}</div>
-      <input type="text" class="searchbar__input" placeholder="Suchen">
+      <div class="searchbar__link">{{ 'search-icon-dark.svg' | asset_url | img_tag : '', 'searchbar__icon' }}</div>
+      <input type="text" class="searchbar__input" placeholder="Suchen" value="{{ search.terms | escape }}">
+      <div class="searchbar__preview-wrapper"></div>
     </form>
     <span>
       <a href="/login">{{ 'user-icon.svg' | asset_url | img_tag : '', 'nav__icon nav__user-icon' }}</a>
@@ -99,7 +100,6 @@
                 <a class="child-nav__heading" href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
               </li>
 
-              <!-- {% if childlink.object %} -->
               {% for type in childlink.object.all_types %}
               {% if forloop.index0 > 0 %}
                 
@@ -111,7 +111,6 @@
               {% endif %}
 
               {% endfor %}
-              <!-- {% endif %} -->
 
             </ul>
             {% endfor %}

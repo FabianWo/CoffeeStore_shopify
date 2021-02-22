@@ -7,6 +7,9 @@
 
   // navigation
   const navSearch = document.querySelector('.nav__searchbar');
+  const navSearchInput = document.querySelector('.searchbar__input');
+  const navSearchPreview = document.querySelector('.searchbar__preview-wrapper');
+
   const mobileButton = document.querySelector('.nav-mobile-button');
   const bottomNavigation = document.querySelector('.nav-container-bottom');
 
@@ -30,6 +33,34 @@
   const cartItemPrices = [...document?.querySelectorAll('#itemPrice')];
 
   // ----- FUNCTIONS -----
+
+  // navigation
+
+  // navigation bar search preview under the search tab
+  const getNavSearchPreview = async (e) => {
+    if (e.target.value.length < 1 ) return;
+
+    const previewElements =
+    await fetch(`/search/suggest.json?q=${e.target.value}&resources[type]=product`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json());
+    const results = await previewElements.resources.results.products;  
+
+    let previewContents = '';
+    results.forEach( (el) => {
+      previewContents += 
+      `<div class="searchbar__preview-element">
+        <img class="searchbar__preview-image" src="${el.image}" alt="${el.title}">
+        <span class="searchbar__preview-heading h3-heading-secondary">${el.title}</span>        
+      </div>
+      `;
+    });
+
+    navSearchPreview.innerHTML = previewContents;
+  };
 
   // collection pages
 
@@ -215,7 +246,7 @@
 
   const updateCartItemData = async (item, quantity) => {
     const lineItemKey = item.dataset.lineItemKey;
-    if ( !lineItemKey ) { return };
+    if ( !lineItemKey ) return;
 
     const variantId = parseInt(item.getAttribute('value'));
     const newVariantQuantity = quantity;
@@ -231,11 +262,11 @@
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(newData)
-    }).then(res => res.json());
-    const result = updateData;
+    });
+    const result = await updateData.json();
 
-    const newCartTotal = await result.total_price;
-    const newCartItemData = await result.items[lineItemKey];
+    const newCartTotal = result.total_price;
+    const newCartItemData = result.items[lineItemKey];
     updateCartTotal(newCartTotal);
     updateCartItemPrice(lineItemKey, newCartItemData);
   };
@@ -275,6 +306,13 @@
       bottomNavigation.style.transform = 'translateX(70%)';
       mobileButton.setAttribute('selected', '');
     }
+  });
+
+  navSearchInput.addEventListener('focus', (e) => {
+    getNavSearchPreview(e);
+  });
+  navSearchInput.addEventListener('input', (e) => {
+    getNavSearchPreview(e);
   });
 
   // product page
@@ -319,7 +357,7 @@
 
 
   // ----- IMMEDIATE FUNCTION CALLS -----
-  if ( paginationInput) {
+  if ( paginationInput ) {
     paginateOnPageLoad();
   }
 
