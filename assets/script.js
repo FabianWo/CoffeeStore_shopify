@@ -37,9 +37,14 @@
   // navigation
 
   // navigation bar search preview under the search tab
-  const getNavSearchPreview = async (e) => {
-    if (e.target.value.length < 1 ) return;
-
+  const getNavSearchPreview = async (e, closePreviewOnBlur) => {
+    if ( e.target.value.length < 1 && navSearchPreview.innerHTML !== '' || closePreviewOnBlur ) {
+      navSearchPreview.innerHTML = '';
+      return;
+    } else if ( e.target.value.length < 1 ) {
+      return;
+    }
+    console.log('object');
     const previewElements =
     await fetch(`/search/suggest.json?q=${e.target.value}&resources[type]=product`, {
       method: 'GET',
@@ -52,10 +57,13 @@
     let previewContents = '';
     results.forEach( (el) => {
       previewContents += 
-      `<div class="searchbar__preview-element">
-        <img class="searchbar__preview-image" src="${el.image}" alt="${el.title}">
-        <span class="searchbar__preview-heading h3-heading-secondary">${el.title}</span>        
-      </div>
+      `
+      <a class="searchbar__preview-link" href="${el.url}">
+        <div class="searchbar__preview-element">
+          <img class="searchbar__preview-image" src="${el.image}" alt="${el.title}">
+          <span class="searchbar__preview-heading">${el.title}</span>        
+        </div>
+      </a>
       `;
     });
 
@@ -313,6 +321,10 @@
   });
   navSearchInput.addEventListener('input', (e) => {
     getNavSearchPreview(e);
+  });
+  navSearchInput.addEventListener('blur', (e) => {
+    if ( !e.relatedTarget?.attributes.class.nodeValue.includes('searchbar') )
+    getNavSearchPreview(e, true);
   });
 
   // product page
