@@ -19,6 +19,12 @@
   Array.from(document.querySelector('select[name="id"]')?.children) :
   undefined;
   let chosenProductOptions = [null, null];
+  const [productPrice, productPerKgPrice] = [document.querySelector('.product__price'),
+  document.querySelector('.product__per-kg-price')];
+  const productImagesWrapper = document.querySelector('.product__images-wrapper');
+  const productMainImage = document.querySelector('.product__main-image');
+  const productMainImageZoomedWrapper = document.querySelector('.product__main-image-zoomed-wrapper');
+  const productMainImageZoomed = document.querySelector('.product__main-image-zoomed');
 
   // collection page
   const sortCollectionChoices = [...document?.querySelectorAll('.collection-filter__list-item')]
@@ -217,16 +223,38 @@
     return variantIsMatching;
   };
 
+  const updateProductPrice = async(selectedVariant) => {
+    const productHandle = document.querySelector('.product__handle').id;
+
+    const prices = await fetch(`/products/${productHandle}.js`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await prices.json();
+
+    const variantData = data.variants.find(el => selectedVariant.id === el.title);
+    const newPrice = (variantData.price / 100).toString().replace('.', ',');
+    const newPerKgPrice = (variantData.unit_price / 100).toString().replace('.', ',');
+
+    productPrice.innerHTML = `- ${newPrice} €`;
+    productPerKgPrice.innerHTML = `( ${newPerKgPrice} € / kg )`;
+
+  };
+
   const selectProductVariant = () => {
     const selectedVariant = productVariants.find( (option) => {
       const variantData = option.id.split(' / ');
       return filterVariant(variantData);
     });
-
+    console.log(selectedVariant)
     if (selectedVariant) {
       productVariants.forEach( option => option.removeAttribute('selected'));
       selectedVariant.setAttribute('selected', '');
     }
+
+    updateProductPrice(selectedVariant);
   };
 
   // dropdown selectors on cart, product, collection pages
@@ -281,17 +309,13 @@
 
   const updateCartItemPrice = (index, newCartItemData) => {
     if ( newCartItemData ) {
-      const newPrice = (newCartItemData.line_price / 100)
-        .toString()
-        .replace('.', ',');
+      const newPrice = (newCartItemData.line_price / 100).toString().replace('.', ',');
       cartItemPrices[index].innerHTML =  newPrice;
     }
   };
 
   const updateCartTotal = (newCartTotal) => {
-    const newTotal = (newCartTotal / 100)
-    .toString()
-    .replace('.', ',');
+    const newTotal = (newCartTotal / 100).toString().replace('.', ',');
     document.querySelector('#cart-total').innerHTML = newTotal;
   };
 
@@ -330,6 +354,26 @@
   // product page
   productFormInputs?.forEach( (input) => {
     input.addEventListener('input', () => setChosenProductOptions());
+  });
+
+  productMainImageZoomedWrapper?.addEventListener('mousemove', (e) => {
+    if (window.innerWidth < 800) return;
+    const zoomScale = productMainImageZoomed.clientWidth / e.target.clientWidth;
+
+    const mouseX = (e.offsetX - e.target.clientWidth / 2) * zoomScale;
+    productMainImageZoomed.style.marginLeft = `${- mouseX}px`;
+
+    const mouseY = (e.offsetY - e.target.clientHeight / 2) * zoomScale;
+    productMainImageZoomed.style.marginTop = `${- mouseY}px`;
+  });
+
+  productMainImage?.addEventListener('click', (e) => {
+    if (window.innerWidth > 800) return;
+    productImagesWrapper.style.width = `${window.innerWidth}px`;
+    productImagesWrapper.style.height = `${window.innerHeight}px`;
+    productImagesWrapper.style.position = `fixed`;
+    productImagesWrapper.style.top = `0`;
+    productImagesWrapper.style.left = `0`;
   });
 
   // cart page

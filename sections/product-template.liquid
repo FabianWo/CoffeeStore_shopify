@@ -31,6 +31,8 @@ Options
 
 {%- endcomment -%}
 
+<div class="product__handle" id="{{ product.handle }}"></div>
+
 <div class="product__breadcrumb">
   {% render 'breadcrumb' %}
 </div>
@@ -39,14 +41,39 @@ Options
 
   <div class="product__images-wrapper">
 
-    <img class="product__main-image" src="{{ featured_image | img_url: 'large' }}" alt="{{ featured_image.alt | escape }}" id="ProductPhotoImg">
+    <div class="product__main-image-wrapper">
+      <img class="product__main-image" src="{{ featured_image | img_url: 'large' }}" alt="{{ featured_image.alt | escape }}" id="ProductPhotoImg">
+      <div class="product__main-image-zoomed-wrapper">
+        <img class="product__main-image-zoomed" src="{{ featured_image | img_url: 'large' }}" alt="{{ featured_image.alt | escape }}" id="ProductPhotoImg">
+      </div>
+    </div>
   
     <div class="product__images-preview">
       {% for image in product.images %}
-        <a href="{{ image.src | img_url: 'large' }}">
+        <a href="">
           <img class="product__preview-image" src="{{ image.src | img_url: 'compact' }}" alt="{{ image.alt | escape }}">
         </a>
       {% endfor %}
+    </div>
+
+    <div class="product__images-mobile">
+
+      <div class="product__main-image-wrapper">
+        <img class="product__main-image" src="{{ featured_image | img_url: 'large' }}" alt="{{ featured_image.alt | escape }}" id="ProductPhotoImg">
+        <div class="product__main-image-zoomed-wrapper">
+          <img class="product__main-image-zoomed" src="{{ featured_image | img_url: 'large' }}" alt="{{ featured_image.alt | escape }}" id="ProductPhotoImg">
+        </div>
+      </div>
+    
+      <div class="product__images-preview">
+        {% for image in product.images %}
+          <a href="">
+            <img class="product__preview-image" src="{{ image.src | img_url: 'compact' }}" alt="{{ image.alt | escape }}">
+          </a>
+        {% endfor %}
+
+      </div>
+
     </div>
 
   </div>

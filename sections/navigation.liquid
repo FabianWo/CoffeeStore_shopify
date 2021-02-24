@@ -67,14 +67,18 @@
             {% endfor %}
           </div>
 
+          {% if forloop.rindex0 != 0 %}
           <div class="mobile-nav__divider"></div>
+          {% endif %}
 
           {% else %}
 
           <li class="mobile-nav__item">
             <a class="nav__link mobile-nav__link" href="{{ link.url }}">{{ link.title }}</a>
           </li>
+          {% if forloop.rindex0 != 0 %}
           <div class="mobile-nav__divider"></div>
+          {% endif %}
 
         {% endif %}
 
