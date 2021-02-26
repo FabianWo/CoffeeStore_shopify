@@ -88,7 +88,7 @@
 
             <div class="article__comment">
               <div class="regular-text">{{ comment.content }}</div>
-              <span class='testimonial__author'>{{ comment.author }} @ {{ comment.created_at }}</span>
+              <span class='testimonial__author'>{{ comment.author }} @ {{ comment.created_at | date: format: 'abbreviated_date'}}</span>
             </div>
 
         {% endfor %}

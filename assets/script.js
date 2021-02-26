@@ -14,6 +14,8 @@
   const bottomNavigation = document.querySelector('.nav-container-bottom');
 
   // product page variables
+
+  // form, variants, data
   const productFormInputs = [...document.querySelectorAll('input[type="radio"]')];
   const productVariants = document.querySelector('select[name="id"]') ?
   Array.from(document.querySelector('select[name="id"]')?.children) :
@@ -21,10 +23,17 @@
   let chosenProductOptions = [null, null];
   const [productPrice, productPerKgPrice] = [document.querySelector('.product__price'),
   document.querySelector('.product__per-kg-price')];
-  const productImagesWrapper = document.querySelector('.product__images-wrapper');
+
+  // images
   const productMainImage = document.querySelector('.product__main-image');
+  const productImagesPreview = [...document.querySelectorAll('.product__images-preview')];
+  // desktop image zoom
   const productMainImageZoomedWrapper = document.querySelector('.product__main-image-zoomed-wrapper');
   const productMainImageZoomed = document.querySelector('.product__main-image-zoomed');
+  // mobile images
+  const productMainImageMobile = document.querySelector('.product__main-image-mobile');
+  const productImagesMobile = document.querySelector('.product__images-mobile');
+  const productImagesMobileClose = document.querySelector('.product__images-mobile-close');
 
   // collection page
   const sortCollectionChoices = [...document?.querySelectorAll('.collection-filter__list-item')]
@@ -199,6 +208,58 @@
   };
 
   // product page
+
+  // handle image zoom on desktop/mobile
+  const handleMainImageZoom = (e, elementToZoom) => {
+    const zoomImage = elementToZoom;
+
+    const zoomScale = zoomImage.clientWidth / e.target.clientWidth;
+
+    const mouseX = (e.offsetX - e.target.clientWidth / 2) * zoomScale;
+    zoomImage.style.marginLeft = `${- mouseX}px`;
+
+    const mouseY = (e.offsetY - e.target.clientHeight / 2) * zoomScale;
+    zoomImage.style.marginTop = `${- mouseY}px`;
+  };
+
+  // handle image switching when clicking preview images
+  const switchProductImages = async (e) => {
+
+    console.log(e.target);
+
+    const targetIndex = parseInt(e.target.dataset.elementPosition);
+    const productHandle = document.querySelector('.product__handle').id;
+
+    const getData = await fetch(`/products/${productHandle}.js`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await getData.json();
+
+    productMainImage.setAttribute('src', `${data.images[targetIndex]}`);
+    productMainImageZoomed.setAttribute('src', `${data.images[targetIndex]}`);
+    productMainImageMobile.setAttribute('src', `${data.images[targetIndex]}`);
+
+    console.log(productImagesPreview.childNodes)
+
+    productImagesPreview.forEach(preview => {
+      Array.from(preview.children).forEach( (el, i) => {
+        if (i === targetIndex) {
+          el.setAttribute('selected', '');
+          return;
+        }
+        el.removeAttribute('selected');
+      });
+    });
+    
+    console.log(data);
+
+    // const variantData = data.variants.find(el => selectedVariant.id === el.title);
+  };
+
+  // set correct options in the background
   const setChosenProductOptions = () => {
     let newchosenProductOptions = [];
 
@@ -226,20 +287,22 @@
   const updateProductPrice = async(selectedVariant) => {
     const productHandle = document.querySelector('.product__handle').id;
 
-    const prices = await fetch(`/products/${productHandle}.js`, {
+    const getData = await fetch(`/products/${productHandle}.js`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
     });
-    const data = await prices.json();
+    const data = await getData.json();
 
     const variantData = data.variants.find(el => selectedVariant.id === el.title);
     const newPrice = (variantData.price / 100).toString().replace('.', ',');
     const newPerKgPrice = (variantData.unit_price / 100).toString().replace('.', ',');
 
     productPrice.innerHTML = `- ${newPrice} €`;
-    productPerKgPrice.innerHTML = `( ${newPerKgPrice} € / kg )`;
+    if (productPerKgPrice) {
+      productPerKgPrice.innerHTML = `( ${newPerKgPrice} € / kg )`;
+    }
 
   };
 
@@ -248,7 +311,6 @@
       const variantData = option.id.split(' / ');
       return filterVariant(variantData);
     });
-    console.log(selectedVariant)
     if (selectedVariant) {
       productVariants.forEach( option => option.removeAttribute('selected'));
       selectedVariant.setAttribute('selected', '');
@@ -357,23 +419,26 @@
   });
 
   productMainImageZoomedWrapper?.addEventListener('mousemove', (e) => {
-    if (window.innerWidth < 800) return;
-    const zoomScale = productMainImageZoomed.clientWidth / e.target.clientWidth;
-
-    const mouseX = (e.offsetX - e.target.clientWidth / 2) * zoomScale;
-    productMainImageZoomed.style.marginLeft = `${- mouseX}px`;
-
-    const mouseY = (e.offsetY - e.target.clientHeight / 2) * zoomScale;
-    productMainImageZoomed.style.marginTop = `${- mouseY}px`;
+    handleMainImageZoom(e, productMainImageZoomed);
   });
 
   productMainImage?.addEventListener('click', (e) => {
-    if (window.innerWidth > 800) return;
-    productImagesWrapper.style.width = `${window.innerWidth}px`;
-    productImagesWrapper.style.height = `${window.innerHeight}px`;
-    productImagesWrapper.style.position = `fixed`;
-    productImagesWrapper.style.top = `0`;
-    productImagesWrapper.style.left = `0`;
+    if (window.innerWidth > 1024) return;
+    document.documentElement.classList.add('stop-scrolling');
+    productImagesMobileClose.style.display = 'flex';
+    productImagesMobile.style.display = `flex`;
+  });
+
+  productImagesMobileClose?.addEventListener('click', (e) => {
+    productImagesMobile.style.display = `none`;
+    productImagesMobileClose.style.display = `none`;
+    document.documentElement.classList.remove('stop-scrolling');
+  });
+
+  productImagesPreview?.forEach(el => {
+    el.addEventListener('click', (e) => {
+      switchProductImages(e);
+    });
   });
 
   // cart page
@@ -397,7 +462,10 @@
 
   // template helper / window
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 800) {
+    if (window.innerWidth > 1024) {
+      productImagesMobile.style.display = 'none';
+      productImagesMobileClose.style.display = `none`;
+      document.documentElement.classList.remove('stop-scrolling');
       bottomNavigation.style.transform = 'translateX(0%)';
       mobileButton.removeAttribute('selected');
     }

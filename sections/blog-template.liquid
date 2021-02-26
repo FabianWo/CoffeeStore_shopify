@@ -10,61 +10,62 @@
     {{ section.settings.blog-description | truncate: 75 }}
   </span>
 
-</div>  
+</div>
 
-<div class="blog__articles">
-
-  {% paginate blog.articles by 5 %}
-  {% for article in blog.articles %}
-
-  <div class="blog__article-wrapper box-lightshadow">
+  <div class="blog__articles">
     
-    {% if article.image %}
+    {% paginate blog.articles by 5 %}
+    {% for article in blog.articles %}
+    
+    <a class="text-black blog__article-wrapper-link" href="{{ article.url }}">
+    <div class="blog__article-wrapper box-lightshadow">
+      
+      {% if article.image %}
       <div class="blog__article-image-wrapper">
         {{ article.image | img_url: '400x' | img_tag: '', 'blog__article-image' }}
       </div>
-    {% else %}
+      {% else %}
       <div class="blog__article-image-wrapper">
         {{ 'collection-1' | placeholder_svg_tag: 'blog__article-image' }}
       </div>
-    {% endif %}
-
-    <div class="blog__article-textbox">
+      {% endif %}
       
-      <h2 class="blog__article-heading">
-        <a class="blog__article-link" href="{{ article.url }}">{{ article.title }}</a>
-      </h2>
-  
-      {% if article.excerpt.size > 0 %}
+      <div class="blog__article-textbox">
+        
+        <h2 class="blog__article-heading">{{ article.title }}</h2>
+        
+        {% if article.excerpt.size > 0 %}
         <span class="blog__article-excerpt regular-text">
           {{- article.excerpt | strip_html | truncatewords: 32 -}}
         </span>
-      {% else %}
+        {% else %}
         <span class="blog__article-excerpt regular-text">
           {{- article.content | strip_html | truncatewords: 32 -}}
         </span>
-      {% endif %}
-  
-      <span class="testimonial__author blog__article-author">
-        {{ article.author | truncate: 30 }} @ {{ article.created_at | date: format: 'abbreviated_date'}}
-      </span>
+        {% endif %}
+        
+        <span class="testimonial__author blog__article-author">
+          {{ article.author | truncate: 30 }} @ {{ article.created_at | date: format: 'abbreviated_date'}}
+        </span>
+
+      </div>
+
     </div>
-
-  </div>
-  {% endfor %}
-  
-  {% if paginate.pages > 1 %}
+    </a>
+    
+    {% endfor %}
+    
+    {% if paginate.pages > 1 %}
     {{ paginate | default_pagination }}
-  {% endif %}
+    {% endif %}
+    
+    {% endpaginate %}
+    
+  </div>
   
-  {% endpaginate %}
-
-</div>
-
-
-{% style %}
-.blog__hero::before {
-  background-image: url({{section.settings.bg-image | img_url: '1930x' }});
+  {% style %}
+  .blog__hero::before {
+    background-image: url({{section.settings.bg-image | img_url: '1930x' }});
 }
 
 .blog__header {

@@ -14,7 +14,12 @@
       <a href="/login">{{ 'user-icon.svg' | asset_url | img_tag : '', 'nav__icon nav__user-icon' }}</a>
     </span>
     <span>
-      <a href="/cart">{{ 'cart-icon.svg' | asset_url | img_tag : '', 'nav__icon nav__cart-icon' }}</a>
+      <a class="nav__cart-wrapper" href="/cart">
+        {{ 'cart-icon.svg' | asset_url | img_tag : '', 'nav__icon nav__cart-icon' }}
+        <div class="nav__cart-count">
+          <p>{{ cart.item_count }}</p>
+        </div>
+      </a>
     </span>
     
     <!-- {% if shop.customer_accounts_enabled %}

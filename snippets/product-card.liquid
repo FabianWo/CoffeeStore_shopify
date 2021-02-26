@@ -1,11 +1,12 @@
 {% if forloop.index <= limit %}
 
 <div class="product-card box-lightshadow">
-  
-  {{ product.images[0] | img_url: '600x' | img_tag: '', 'product-card__image' }}
+  <a href="{{ product.url | within: collection }}">
+    {{ product.images[0] | img_url: '600x' | img_tag: '', 'product-card__image' }}
+  </a>
   
   <span class="h3-heading-secondary product-card__text">
-    {{ product.title }}
+    <a class="text-black" href="{{ product.url | within: collection }}">{{ product.title }}</a>
   </span>
   
   <span class="product-card__price">
