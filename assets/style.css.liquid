@@ -482,7 +482,7 @@ body {
   padding: 1.75rem 0;
   display: inline-block;
   
-  letter-spacing: -.04em;
+  letter-spacing: -.03em;
   font-family: {{ settings.font-primary.family | append: '500'}};
 }
 
@@ -509,12 +509,12 @@ body {
   left: 13px;
   background-color: white;
   color: var(--color-darkblue);
-  height: 25px;
-  width: 25px;
+  height: 27px;
+  width: 27px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.125rem;
+  font-size: 1rem;
   border-radius: 100px;
   transition: transform 0.3s;
   letter-spacing: -.03em;
@@ -580,7 +580,7 @@ body {
 .searchbar__preview-element {
   display: flex;
   padding: 0.625rem 0;
-  margin: 0 2.5rem;
+  margin: 0 1.5rem;
   gap: 0.75rem;
 }
 
@@ -636,8 +636,8 @@ body {
   background-color: white;
   border-bottom: 1px solid rgb(235, 235, 235);
   box-shadow: 
-  var(--shadow-box2),
-  inset 0px 27px 20px -20px rgb(114, 114, 114, 0.35);
+  var(--shadow-box2);
+  /* inset 0px 14px 15px -10px rgb(114, 114, 114, 0.45); */
 }
 
 .nav__list-item:hover .child-navigation {
@@ -660,14 +660,14 @@ body {
   color: black;
   font-size: 1.125rem;
   padding: 0.5rem 0;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
   letter-spacing: -.065em;
   transition: all 0.1s;
   font-family: {{ settings.font-primary.family | append: '500'}};
 }
 
 .child-nav__heading:hover {
-  color: #474747;
+  color: #5d5d5d;
 }
 
 .child-nav__list-item {
@@ -963,15 +963,20 @@ body {
   flex-direction: column;
   align-items: flex-start;
   transition: margin 0.2s;
+  max-width: 75%;
 }
 
 .featured-link:hover .featured-link__content {
   margin-right: 3px;
 }
 
+.featured-link__heading {
+  font-size: clamp(24px, 5vw, 2rem);
+}
+
 .featured-link__text {
   color: white;
-  font-size: clamp(1.25rem, 6vw, 1.375rem);
+  font-size: clamp(1.125rem, 6vw, 1.25rem);
 }
 
 
@@ -2108,8 +2113,9 @@ margin-top: auto;
   padding-bottom: 0.5rem;
   color: white;
   font-size: 1.25rem;
-  letter-spacing: -0.06em;
-  font-weight: 500;
+  letter-spacing: -0.03em;
+
+  font-family: {{ settings.font-primary.family | append: '500'}};
 }
 
 .footer__extras {
@@ -2291,10 +2297,6 @@ margin-top: auto;
   
   .searchbar__input {
     max-width: 180px;
-  }
-
-  .searchbar__preview-element {
-    margin: 0 1.5rem;
   }
 
   .mobile-nav {

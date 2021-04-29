@@ -17,7 +17,7 @@
       <a class="nav__cart-wrapper" href="/cart">
         {{ 'cart-icon.svg' | asset_url | img_tag : '', 'nav__icon nav__cart-icon' }}
         <div class="nav__cart-count">
-          <p>{{ cart.item_count }}</p>
+          <p class="nav__cart-item-count">{{ cart.item_count }}</p>
         </div>
       </a>
     </span>

@@ -1,4 +1,4 @@
-(() => {
+(async() => {
   // ----- VARIABLES -----
   // general
 
@@ -9,13 +9,18 @@
   const navSearch = document.querySelector('.nav__searchbar');
   const navSearchInput = document.querySelector('.searchbar__input');
   const navSearchPreview = document.querySelector('.searchbar__preview-wrapper');
+  const navCartItemCount = document.querySelector('.nav__cart-item-count');
 
   const mobileButton = document.querySelector('.nav-mobile-button');
   const bottomNavigation = document.querySelector('.nav-container-bottom');
 
   // product page variables
-
+  
   // form, variants, data
+  const productHandle = document.querySelector('.product__handle') ?
+  document.querySelector('.product__handle').id :
+  null;
+
   const productFormInputs = [...document.querySelectorAll('input[type="radio"]')];
   const productVariants = document.querySelector('select[name="id"]') ?
   Array.from(document.querySelector('select[name="id"]')?.children) :
@@ -209,6 +214,18 @@
 
   // product page
 
+  // get product data on product page
+  const getProductData = async() => {
+    const getData = await fetch(`/products/${productHandle}.js`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await getData.json();
+    return data;
+  };
+
   // handle image zoom on desktop/mobile
   const handleMainImageZoom = (e, elementToZoom) => {
     const zoomImage = elementToZoom;
@@ -223,26 +240,12 @@
   };
 
   // handle image switching when clicking preview images
-  const switchProductImages = async (e) => {
-
-    console.log(e.target);
-
+  const switchProductImages = async (e, data) => {
     const targetIndex = parseInt(e.target.dataset.elementPosition);
-    const productHandle = document.querySelector('.product__handle').id;
-
-    const getData = await fetch(`/products/${productHandle}.js`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    const data = await getData.json();
 
     productMainImage.setAttribute('src', `${data.images[targetIndex]}`);
     productMainImageZoomed.setAttribute('src', `${data.images[targetIndex]}`);
     productMainImageMobile.setAttribute('src', `${data.images[targetIndex]}`);
-
-    console.log(productImagesPreview.childNodes)
 
     productImagesPreview.forEach(preview => {
       Array.from(preview.children).forEach( (el, i) => {
@@ -253,8 +256,6 @@
         el.removeAttribute('selected');
       });
     });
-    
-    console.log(data);
 
     // const variantData = data.variants.find(el => selectedVariant.id === el.title);
   };
@@ -367,6 +368,7 @@
     const newCartItemData = result.items[lineItemKey];
     updateCartTotal(newCartTotal);
     updateCartItemPrice(lineItemKey, newCartItemData);
+    navCartItemCount.innerHTML = `${result.item_count}`;
   };
 
   const updateCartItemPrice = (index, newCartItemData) => {
@@ -437,7 +439,7 @@
 
   productImagesPreview?.forEach(el => {
     el.addEventListener('click', (e) => {
-      switchProductImages(e);
+      switchProductImages(e, productData);
     });
   });
 
@@ -453,8 +455,7 @@
     button.addEventListener('click', async (e) => {
       e.preventDefault();
       await updateCartItemData(button, 0);
-      button.closest('div[class="cart__item-wrapper"]')
-      .previousElementSibling.remove();
+      button.closest('div[class="cart__item-wrapper"]').previousElementSibling.remove();
       button.closest('div[class="cart__item-wrapper"]').remove();
     });
   });
@@ -463,8 +464,8 @@
   // template helper / window
   window.addEventListener('resize', () => {
     if (window.innerWidth > 1024) {
-      productImagesMobile.style.display = 'none';
-      productImagesMobileClose.style.display = `none`;
+      if (productImagesMobile) productImagesMobile.style.display = 'none';
+      if (productImagesMobileClose) productImagesMobileClose.style.display = `none`;
       document.documentElement.classList.remove('stop-scrolling');
       bottomNavigation.style.transform = 'translateX(0%)';
       mobileButton.removeAttribute('selected');
@@ -479,10 +480,9 @@
     }
   });
 
-
   // ----- IMMEDIATE FUNCTION CALLS -----
   if ( paginationInput ) {
     paginateOnPageLoad();
   }
-
+  const productData = productHandle ? await getProductData() : null;
 })();

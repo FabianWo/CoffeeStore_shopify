@@ -92,7 +92,11 @@
   <div class="cart__checkout-text-wrapper">
     <span class="cart__checkout-sum cart__checkout-sum-shipping">Versandkosten: </span>
     <span id="cart-shipping" class="cart__item-line-price cart__total">
-      {{ shipping_method.title }} {{ shop.currency }}
+      {% if shipping_method.title %}
+        {{ shipping_method.title }} {{ shop.currency }}
+      {% else %}
+        Free Shipping!
+      {% endif %}
     </span>
   </div>
 
